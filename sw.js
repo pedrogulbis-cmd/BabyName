@@ -1,9 +1,9 @@
-/* babyName — service worker.
+/* Baby Name — service worker.
    Il s'installe tout de suite (quelques petits fichiers seulement), ce qui
    rend l'app installable dès la première visite ; les données (13 Mo) sont
    mises en cache au passage, la première fois qu'elles sont chargées.
    Incrémenter CACHE à chaque mise en ligne d'une nouvelle version. */
-const CACHE = "babyname-3";
+const CACHE = "babyname-4";
 const BASE = ["./", "./index.html", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/logo-marque.png", "./icons/favicon-32.png"];
 

@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="BabyName">
+<meta name="apple-mobile-web-app-title" content="Baby Name">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="Plus de 150 000 prénoms de bébé, fille et garçon : origine, signification, étymologie, tradition, fête et popularité.">
-<title>BabyName</title>
+<title>Baby Name</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
@@ -412,7 +412,7 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 
 <header class="top">
   <div class="top-in">
-    <div class="brand"><img src="icons/logo-marque.png" alt="" width="34" height="28"><b><em>baby</em><span>Name</span></b></div>
+    <div class="brand"><img src="icons/logo-marque.png" alt="" width="34" height="28"><b><em>Baby</em> <span>Name</span></b></div>
     <button class="ver" id="ver-chip" data-act="journal" title="Voir les nouveautés"></button>
     <div class="top-sp"></div>
     <button class="btn pri hide" id="btn-installer" data-act="installer" style="padding:8px 12px;font-size:13px">
@@ -427,7 +427,7 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
   </div>
 </header>
 
-<main class="wrap" id="v-noms"><div class="charge" id="charge"><img src="icons/logo.png" alt="babyName">Chargement de 157 000 prénoms…<div class="barre"><i></i></div></div></main>
+<main class="wrap" id="v-noms"><div class="charge" id="charge"><img src="icons/logo.png" alt="Baby Name">Chargement de 157 000 prénoms…<div class="barre"><i></i></div></div></main>
 <main class="wrap hide" id="v-dec"></main>
 <main class="wrap hide" id="v-favs"></main>
 <main class="wrap hide" id="v-plus"></main>
@@ -444,7 +444,7 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 <script>
 "use strict";
 /* ============================================================
-   BabyName — prénoms de bébé, fille et garçon
+   Baby Name — prénoms de bébé, fille et garçon
    Une seule page, aucune dépendance. Les données (data/names.js)
    sont chargées à part ; goûts et réglages restent sur l'appareil.
    ============================================================ */
@@ -490,7 +490,7 @@ window.addEventListener("beforeinstallprompt", e => {
 window.addEventListener("appinstalled", () => {
   invitation = null;
   majInstall();
-  toast("babyName est installée sur ton appareil");
+  toast("Baby Name est installée sur ton appareil");
 });
 function majInstall(){
   const b = document.getElementById("btn-installer");
@@ -511,8 +511,8 @@ async function installer(){
 }
 function blocInstall(){
   const txt = 'style="font-size:13px;color:var(--gris);line-height:1.6"';
-  if(estInstallee()) return '<div ' + txt + '>✓ Tu utilises babyName en application.</div>';
-  if(invitation) return '<div class="lig"><div class="l">Ajouter babyName à l\'écran d\'accueil<div class="d">Elle s\'ouvrira en plein écran, avec son icône, et fonctionnera hors ligne.</div></div><button class="btn pri" data-act="installer">Installer</button></div>';
+  if(estInstallee()) return '<div ' + txt + '>✓ Tu utilises Baby Name en application.</div>';
+  if(invitation) return '<div class="lig"><div class="l">Ajouter Baby Name à l\'écran d\'accueil<div class="d">Elle s\'ouvrira en plein écran, avec son icône, et fonctionnera hors ligne.</div></div><button class="btn pri" data-act="installer">Installer</button></div>';
   if(estIOS) return '<div ' + txt + '>Dans <b style="color:var(--texte)">Safari</b> : touche le bouton Partager en bas, puis « <b style="color:var(--texte)">Sur l\'écran d\'accueil</b> ». Sur iPhone, seul Safari sait installer une application web.</div>';
   return '<div ' + txt + '>Dans Chrome : menu <b style="color:var(--texte)">⋮</b> puis « <b style="color:var(--texte)">Installer l\'application</b> ». Si seul « Ajouter à l\'écran d\'accueil » apparaît, recharge la page une fois : l\'installation devient possible dès que le mode hors ligne est prêt.</div>' +
     '<div class="btns"><button class="btn" data-act="diag-install">Vérifier l\'installation</button></div><div id="diag" class="note hide"></div>';
@@ -1188,7 +1188,7 @@ function vueFavs(){
 function texteFavs(){
   const c = gouts.filter(g => g.l === 2).map(g => "★ " + g.n + (nomFamille ? " " + nomFamille : ""));
   const a = gouts.filter(g => g.l === 1).map(g => "♥ " + g.n + (nomFamille ? " " + nomFamille : ""));
-  return "Nos prénoms préférés (babyName)\n" + (c.length ? "\nCoups de cœur :\n" + c.join("\n") + "\n" : "") + (a.length ? "\nJ'aime :\n" + a.join("\n") : "");
+  return "Nos prénoms préférés (Baby Name)\n" + (c.length ? "\nCoups de cœur :\n" + c.join("\n") + "\n" : "") + (a.length ? "\nJ'aime :\n" + a.join("\n") : "");
 }
 async function partager(titre, texte, url){
   if(navigator.share){ try { await navigator.share(url ? { title:titre, text:texte, url } : { title:titre, text:texte }); return; } catch(e){ if(e.name === "AbortError") return; } }
@@ -1804,7 +1804,7 @@ function apresFiltres(){
    ============================================================ */
 function vuePlus(){
   const avecEty = D ? D.n.reduce((a, r) => a + (r[5] !== -1 || (r[7] && r[7].e) ? 1 : 0), 0) : 0;
-  $("#v-plus").innerHTML = '<section class="page-h" style="text-align:center"><img class="logo-grand" src="icons/logo.png" alt="babyName">' +
+  $("#v-plus").innerHTML = '<section class="page-h" style="text-align:center"><img class="logo-grand" src="icons/logo.png" alt="Baby Name">' +
     '<div class="compte" style="justify-content:center;gap:14px;margin-top:14px;font-size:13px"><span><b>' + fmtN(N) + '</b> prénoms</span><span><b>' + fmtN(avecEty) + '</b> avec origine expliquée</span></div></section>' +
     '<div class="bloc"><div class="bloc-h">Notre famille</div><div class="bloc-b">' +
       '<div class="lig" style="display:block"><div class="l">Nom de famille<div class="d">Chaque prénom s\'affiche en entier, avec ses initiales. Reste sur cet appareil.</div></div>' +
@@ -1877,7 +1877,7 @@ function auHasard(){
   }
 }
 function ouvrirJournal(){
-  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl"><h3>Nouveautés</h3><div class="sous">babyName ' + VERSION + '</div>' +
+  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl"><h3>Nouveautés</h3><div class="sous">Baby Name ' + VERSION + '</div>' +
     JOURNAL.map(j => '<div style="border-top:1px solid var(--trait2);padding:12px 0"><div style="display:flex;gap:9px;align-items:baseline"><span class="mono" style="font-size:12.5px;font-weight:500">' + j.v + '</span><span class="mono" style="font-size:10.5px;color:var(--gris2)">' + j.d + '</span><span style="font-size:13px;color:var(--gris);margin-left:auto">' + esc(j.t) + '</span></div><ul style="margin:7px 0 0;padding-left:17px">' +
       j.l.map(l => '<li style="font-size:13px;line-height:1.55;margin-bottom:3px;color:var(--gris)">' + esc(l) + '</li>').join("") + '</ul></div>').join("") +
     '<div class="btns"><button class="btn wide" data-act="fermer-modal-btn">Fermer</button></div></div></div>';
@@ -1915,7 +1915,7 @@ document.addEventListener("click", e => {
   if(a === "duo-envoyer"){
     const p = $("#duo-p").value.trim(); store.set("monPrenom", p);
     $("#modal").innerHTML = "";
-    partager("Nos prénoms — mode duo", (p ? p + " t'envoie" : "Voici") + " ses prénoms préférés sur babyName. Ouvre le lien pour voir vos matchs 💞", lienDuo(p));
+    partager("Nos prénoms — mode duo", (p ? p + " t'envoie" : "Voici") + " ses prénoms préférés sur Baby Name. Ouvre le lien pour voir vos matchs 💞", lienDuo(p));
     return;
   }
   if(a === "duo-oublier"){ partenaire = null; store.set("partenaire", null); vueFavs(); return; }
