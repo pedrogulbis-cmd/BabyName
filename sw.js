@@ -3,7 +3,7 @@
    rend l'app installable dès la première visite ; les données (13 Mo) sont
    mises en cache au passage, la première fois qu'elles sont chargées.
    Incrémenter CACHE à chaque mise en ligne d'une nouvelle version. */
-const CACHE = "babyname-8";
+const CACHE = "babyname-9";
 const BASE = ["./", "./index.html", 
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/logo-marque.png", "./icons/favicon-32.png"];
 
