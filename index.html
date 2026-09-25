@@ -10,7 +10,33 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="Plus de 150 000 prénoms de bébé, fille et garçon : origine, signification, étymologie, tradition, fête et popularité.">
 <title>Baby Name</title>
-<link rel="manifest" href="manifest.webmanifest">
+<script>
+/* Manifeste construit ici même, comme dans CashFlow : adresses complètes
+   calculées d'après l'emplacement réel de la page (GitHub Pages, sous-dossier…).
+   Chrome installe alors l'app en plein écran depuis « Ajouter à l'écran
+   d'accueil », sans dépendre du service de Google qui fabrique les WebAPK. */
+(function(){
+  try {
+    var base = location.href.split("#")[0].split("?")[0].replace(/[^\/]*$/, "");
+    var man = {
+      name: "Baby Name", short_name: "Baby Name",
+      description: "Plus de 150 000 prénoms de bébé : origine, signification, tradition, fête et popularité.",
+      lang: "fr", start_url: base, scope: base, id: base,
+      display: "standalone", orientation: "portrait",
+      background_color: "#f9f9f9", theme_color: "#ffffff",
+      icons: [
+        { src: base + "icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: base + "icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+        { src: base + "icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }
+      ]
+    };
+    var l = document.createElement("link");
+    l.rel = "manifest";
+    l.href = URL.createObjectURL(new Blob([JSON.stringify(man)], { type: "application/manifest+json" }));
+    document.head.appendChild(l);
+  } catch(e){}
+})();
+</script>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -514,15 +540,15 @@ function blocInstall(){
   if(estInstallee()) return '<div ' + txt + '>✓ Tu utilises Baby Name en application.</div>';
   if(invitation) return '<div class="lig"><div class="l">Ajouter Baby Name à l\'écran d\'accueil<div class="d">Elle s\'ouvrira en plein écran, avec son icône, et fonctionnera hors ligne.</div></div><button class="btn pri" data-act="installer">Installer</button></div>';
   if(estIOS) return '<div ' + txt + '>Dans <b style="color:var(--texte)">Safari</b> : touche le bouton Partager en bas, puis « <b style="color:var(--texte)">Sur l\'écran d\'accueil</b> ». Sur iPhone, seul Safari sait installer une application web.</div>';
-  return '<div ' + txt + '>Dans Chrome : menu <b style="color:var(--texte)">⋮</b> puis « <b style="color:var(--texte)">Installer l\'application</b> ». Si seul « Ajouter à l\'écran d\'accueil » apparaît, recharge la page une fois : l\'installation devient possible dès que le mode hors ligne est prêt.</div>' +
-    '<div class="btns"><button class="btn" data-act="diag-install">Vérifier l\'installation</button></div><div id="diag" class="note hide"></div>';
+  return '<div ' + txt + '>Dans Chrome : menu <b style="color:var(--texte)">⋮</b> → « <b style="color:var(--texte)">Ajouter à l’écran d’accueil</b> » → <b style="color:var(--texte)">Installer</b> (pas « Créer un raccourci »). L’app s’ouvre ensuite en plein écran, sans barre d’adresse, comme CashFlow.</div>' +
+    '<div class="btns"><button class="btn" data-act="diag-install">Vérifier l’installation</button></div><div id="diag" class="note hide"></div>';
 }
 async function diagnostic(){
   const d = document.getElementById("diag"); if(!d) return;
   const l = [];
   l.push((location.protocol === "https:" ? "✓" : "✗") + " page en HTTPS");
-  try { const r = await fetch("manifest.webmanifest", { cache:"no-store" }); const m = await r.json(); l.push("✓ manifeste lu (" + (m.icons || []).length + " icônes)"); }
-  catch(e){ l.push("✗ manifest.webmanifest introuvable ou illisible"); }
+  try { const r = await fetch(document.querySelector('link[rel="manifest"]').href); const m = await r.json(); l.push("✓ manifeste prêt (" + (m.icons || []).length + " icônes, départ " + m.start_url + ")"); }
+  catch(e){ l.push("✗ manifeste introuvable"); }
   for(const ic of ["icons/icon-192.png", "icons/icon-512.png", "sw.js"]){
     try { const r = await fetch(ic, { cache:"no-store" }); l.push((r.ok ? "✓ " : "✗ ") + ic); } catch(e){ l.push("✗ " + ic); }
   }
@@ -531,7 +557,7 @@ async function diagnostic(){
     l.push((reg && reg.active ? "✓" : "✗") + " service worker " + (reg ? (reg.active ? "actif" : "en cours d'installation") : "absent"));
     l.push((navigator.serviceWorker.controller ? "✓ page contrôlée" : "… page pas encore contrôlée : recharge la page"));
   } else l.push("✗ service worker non pris en charge par ce navigateur");
-  l.push(invitation ? "✓ Chrome propose l'installation" : "… Chrome n'a pas encore proposé l'installation");
+  l.push(invitation ? "✓ Chrome propose l'installation directe" : "→ passe par ⋮ puis « Ajouter à l'écran d'accueil »");
   d.innerHTML = l.map(esc).join("<br>");
   d.classList.remove("hide");
 }
