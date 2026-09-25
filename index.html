@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BabyName">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Plus de 150 000 prénoms de bébé, fille et garçon : origine, signification, étymologie, tradition, fête et popularité.">
+<title>BabyName</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Clair — reprise de CashFlow : papier blanc, encre noire, un seul accent,
+     qui prend ici la couleur du choix fait sur le bébé. Lavande et rose
+     viennent du logo. */
+  --fond:#ffffff; --fond2:#fafafa; --carte:#ffffff;
+  --trait:#e6e6e9; --trait2:#f1f1f4;
+  --texte:#000000; --gris:#71717a; --gris2:#a1a1aa;
+  --rose:#D6336C; --bleu:#2C3AE0; --violet:#7E68C9;
+  --lavande:#AC9BD4; --rosepale:#EAA4BA; --or:#E0A21B;
+  --acc:var(--rose); --accF:rgba(214,51,108,.08); --accB:rgba(214,51,108,.35); --surAcc:#ffffff;
+  --peau:#F6D6C2; --peau2:#EFC3A8; --trait-visage:#3b2a24; --joue:#F29BB0;
+  --voile:rgba(255,255,255,.88);
+  --ombre:0 1px 2px rgba(0,0,0,.04), 0 8px 28px rgba(0,0,0,.06);
+  --ombre2:0 2px 6px rgba(0,0,0,.05), 0 18px 48px rgba(0,0,0,.10);
+  --r:12px;
+  --tab:calc(58px + env(safe-area-inset-bottom));
+  --row:64px;
+}
+html[data-mode="M"]{--acc:var(--bleu);--accF:rgba(44,58,224,.08);--accB:rgba(44,58,224,.35)}
+html[data-mode="T"]{--acc:var(--violet);--accF:rgba(126,104,201,.09);--accB:rgba(126,104,201,.35)}
+html[data-theme="sombre"]{
+  --fond:#0d0d10; --fond2:#141418; --carte:#141418;
+  --trait:#26262d; --trait2:#1c1c22;
+  --texte:#f6f6f7; --gris:#9a9aa4; --gris2:#6d6d78;
+  --rose:#FF6B9A; --bleu:#7C8CFF; --violet:#B3A3F0; --or:#F5BE3F;
+  --accF:rgba(255,107,154,.10); --accB:rgba(255,107,154,.35); --surAcc:#0d0d10;
+  --peau:#E9C3AC; --peau2:#D9A98D; --trait-visage:#2a1d18;
+  --voile:rgba(13,13,16,.88);
+  --ombre:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.5);
+  --ombre2:0 2px 6px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.6);
+}
+html[data-theme="sombre"][data-mode="M"]{--accF:rgba(124,140,255,.10);--accB:rgba(124,140,255,.35)}
+html[data-theme="sombre"][data-mode="T"]{--accF:rgba(179,163,240,.10);--accB:rgba(179,163,240,.35)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--fond);color:var(--texte);
+  font-family:"Inter Tight",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;transition:background .25s;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;padding:0}
+button[disabled]{opacity:.45;pointer-events:none}
+a{color:var(--acc)}
+h1,h2,h3{font-weight:600;margin:0;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;letter-spacing:-.015em;white-space:nowrap}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.hide{display:none!important}
+.drap{display:inline-block;width:18px;height:12px;border-radius:2.5px;object-fit:cover;vertical-align:-1px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:0 0 auto;background:var(--trait2)}
+.drap.g{width:24px;height:16px;border-radius:3px}
+.etin{display:inline-block;width:18px;text-align:center;color:var(--gris2);font-size:12px}
+
+/* ---------------- ossature ---------------- */
+.wrap{max-width:640px;margin:0 auto;padding:0 18px calc(var(--tab) + 28px);position:relative;z-index:1}
+header.top{position:sticky;top:0;z-index:30;background:var(--voile);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--trait);padding-top:env(safe-area-inset-top)}
+.top-in{max-width:640px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;letter-spacing:-.03em}
+.brand img{width:34px;height:auto;display:block}
+.brand b{font-weight:600}
+.brand b span{color:var(--rosepale)}
+.brand b em{font-style:normal;color:var(--lavande)}
+.top-sp{flex:1}
+.ver{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--gris);
+  border:1px solid var(--trait);border-radius:7px;padding:3px 7px;background:var(--fond2)}
+.iconbtn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;
+  border:1px solid var(--trait);color:var(--texte);background:var(--carte)}
+.iconbtn:active{background:var(--fond2)}
+
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--voile);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--trait);padding-bottom:env(safe-area-inset-bottom)}
+.tabs-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;
+  color:var(--gris);font-size:10.5px;letter-spacing:-.01em;border-top:2px solid transparent;margin-top:-1px}
+.tab.on{color:var(--texte);border-top-color:var(--acc)}
+.tab.on svg{color:var(--acc)}
+.tab .pas{position:absolute;top:4px;left:calc(50% + 7px);min-width:16px;height:16px;border-radius:8px;
+  background:var(--acc);color:var(--surAcc);font-size:9.5px;font-weight:600;display:grid;place-items:center;padding:0 4px}
+
+/* ---------------- le bébé, élément signature ---------------- */
+.hero{padding:22px 0 16px;text-align:center;border-bottom:1px solid var(--trait)}
+.scene{perspective:1000px;width:172px;height:172px;margin:4px auto 0;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;position:relative}
+.scene:active{cursor:grabbing}
+.prisme{position:absolute;inset:0}
+.face{position:absolute;inset:0;border-radius:36px;display:grid;place-items:center;
+  transform-origin:50% 50%;border:1px solid var(--trait);
+  box-shadow:var(--ombre);overflow:hidden}
+.face svg{width:84%;height:84%;display:block}
+.face.f{background:radial-gradient(120% 90% at 50% 10%,rgba(214,51,108,.16),rgba(214,51,108,.04) 70%),var(--carte)}
+.face.m{background:radial-gradient(120% 90% at 50% 10%,rgba(44,58,224,.15),rgba(44,58,224,.035) 70%),var(--carte)}
+.face.t{background:radial-gradient(120% 90% at 50% 10%,rgba(126,104,201,.18),rgba(126,104,201,.04) 70%),var(--carte)}
+.hero-lbl{font-size:13.5px;color:var(--gris);margin-top:16px}
+.hero-val{font-size:clamp(34px,11vw,48px);font-weight:600;letter-spacing:-.045em;line-height:1.05;margin:4px 0 0;display:block}
+.hero-val em{font-style:normal;color:var(--acc);transition:color .3s}
+.hero-bar{height:3px;width:56px;background:var(--acc);border-radius:2px;margin:12px auto 0;transition:background .3s}
+.seg3{display:inline-grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--trait);border-radius:11px;
+  overflow:hidden;margin-top:16px;background:var(--carte)}
+.seg3 button{padding:8px 16px;font-size:13.5px;color:var(--gris);border-right:1px solid var(--trait);display:flex;gap:6px;align-items:center;justify-content:center}
+.seg3 button:last-child{border-right:0}
+.seg3 button.on{background:var(--acc);color:var(--surAcc);font-weight:500}
+.hint{font-size:11.5px;color:var(--gris2);margin-top:10px;font-family:"IBM Plex Mono",monospace}
+
+/* ---------------- barre de recherche collante ---------------- */
+.outils{position:sticky;z-index:20;background:var(--voile);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  margin:0 -18px;padding:10px 18px 8px;border-bottom:1px solid var(--trait)}
+.rech{position:relative}
+.rech svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gris2);pointer-events:none}
+.rech input{width:100%;padding:11px 126px 11px 38px;border-radius:11px;border:1px solid var(--trait);
+  background:var(--carte);color:var(--texte);font-size:15.5px;-webkit-appearance:none;appearance:none}
+.rech input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transparent}
+.rech input::-webkit-search-cancel-button{display:none}
+.portee{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;border:1px solid var(--trait);border-radius:8px;overflow:hidden;background:var(--fond2)}
+.portee button{font-size:11.5px;padding:5px 8px;color:var(--gris)}
+.portee button.on{background:var(--acc);color:var(--surAcc)}
+.rech .x{position:absolute;right:92px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:8px;
+  display:grid;place-items:center;color:var(--gris)}
+.lig-outils{display:flex;align-items:center;gap:7px;margin-top:9px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:0}
+.chips::-webkit-scrollbar{display:none}
+.chips.wr{flex-wrap:wrap;overflow:visible}
+.chip{white-space:nowrap;font-size:12.5px;padding:6px 11px;border-radius:999px;
+  border:1px solid var(--trait);color:var(--gris);background:var(--carte);display:inline-flex;align-items:center;gap:6px}
+.chip.on{color:var(--surAcc);background:var(--acc);border-color:var(--acc)}
+.chip.on .drap{box-shadow:0 0 0 1px rgba(255,255,255,.5)}
+.chip.lien{color:var(--texte)}
+.chip.lien:active{background:var(--fond2)}
+.chip small{font-size:10.5px;opacity:.7;font-family:"IBM Plex Mono",monospace}
+.filtre-btn{position:relative;flex:0 0 auto}
+.filtre-btn i{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--acc);border:2px solid var(--fond)}
+.compte{font-size:12px;color:var(--gris2);margin-top:7px;display:flex;justify-content:space-between;gap:10px}
+.compte b{color:var(--texte);font-weight:500}
+
+/* ---------------- liste virtuelle ---------------- */
+.liste{position:relative}
+.fen{position:absolute;left:0;right:0;top:0;will-change:transform}
+.nrow{display:flex;align-items:center;gap:12px;height:var(--row);padding:0 2px;border-bottom:1px solid var(--trait2);cursor:pointer}
+.nrow:active{background:var(--fond2)}
+.av{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:grid;place-items:center;
+  font-size:15px;font-weight:600;background:var(--fond2);border:1px solid var(--trait2);color:var(--gris)}
+.av.F{color:var(--rose);background:color-mix(in srgb,var(--rose) 9%,transparent);border-color:color-mix(in srgb,var(--rose) 18%,transparent)}
+.av.M{color:var(--bleu);background:color-mix(in srgb,var(--bleu) 9%,transparent);border-color:color-mix(in srgb,var(--bleu) 18%,transparent)}
+.av.X{color:var(--violet);background:color-mix(in srgb,var(--violet) 10%,transparent);border-color:color-mix(in srgb,var(--violet) 20%,transparent)}
+.nmid{flex:1;min-width:0}
+.nn{display:block;font-weight:500;font-size:15.5px;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ns{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gris2);margin-top:1px;white-space:nowrap;overflow:hidden}
+.ns span{overflow:hidden;text-overflow:ellipsis}
+.nr{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--gris2);white-space:nowrap}
+.coeur{width:36px;height:36px;flex:0 0 36px;border-radius:10px;display:grid;place-items:center;color:var(--gris2)}
+.coeur.l1{color:var(--acc)}
+.coeur.l1 svg{fill:currentColor}
+.coeur.l2{color:var(--or)}
+.coeur.l2 svg{fill:currentColor}
+.coeur:active{transform:scale(.88)}
+.avec-rail .nrow{padding-right:26px}
+.vide{padding:34px 4px;color:var(--gris);font-size:14px;text-align:center;border-bottom:1px solid var(--trait2)}
+.vide b{display:block;color:var(--texte);font-weight:500;margin-bottom:5px;font-size:15px}
+
+/* ---------------- index alphabétique ---------------- */
+.rail{position:fixed;z-index:25;right:max(2px,calc((100vw - 640px) / 2 + 2px));width:24px;display:flex;flex-direction:column;
+  justify-content:space-between;align-items:center;touch-action:none;user-select:none;-webkit-user-select:none;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.rail.on{opacity:1;pointer-events:auto}
+.rail span{display:block;font-size:10px;font-weight:600;line-height:1;color:var(--gris2);
+  transform-origin:right center;transition:transform .16s ease-out,color .16s;padding:0 5px 0 0;will-change:transform}
+.rail span.pres{color:var(--gris)}
+.rail span.act{color:var(--acc)}
+.bulle{position:fixed;z-index:26;width:66px;height:66px;border-radius:20px;background:var(--acc);color:var(--surAcc);
+  display:grid;place-items:center;font-size:34px;font-weight:600;letter-spacing:-.03em;box-shadow:var(--ombre);
+  right:max(44px,calc((100vw - 640px) / 2 + 44px));opacity:0;transform:scale(.7);pointer-events:none;
+  transition:opacity .18s,transform .18s}
+.bulle.on{opacity:1;transform:none}
+
+/* ---------------- fiche prénom (panneau) ---------------- */
+#sheet:empty,#modal:empty{display:none}
+.sheet[data-g="F"]{--acc:var(--rose)}.sheet[data-g="M"]{--acc:var(--bleu)}.sheet[data-g="X"]{--acc:var(--violet)}
+.sheet{position:fixed;inset:0;z-index:51;background:var(--fond);overflow:auto;overscroll-behavior:contain;
+  animation:mte .22s cubic-bezier(.22,.7,.3,1)}
+@keyframes mte{from{transform:translateY(14px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-in{max-width:640px;margin:0 auto;padding:0 18px calc(40px + env(safe-area-inset-bottom))}
+.sheet-top{position:sticky;top:0;z-index:5;background:var(--voile);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--trait);
+  padding:calc(env(safe-area-inset-top) + 9px) 18px 9px;display:flex;align-items:center;gap:10px}
+.sheet-top .t{flex:1;font-weight:600;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  opacity:0;transition:opacity .2s}
+.sheet-top .t.on{opacity:1}
+.fiche-h{padding:26px 0 20px;border-bottom:1px solid var(--trait)}
+.fiche-nom{font-size:clamp(44px,14vw,64px);font-weight:600;letter-spacing:-.05em;line-height:1;margin:10px 0 0;word-break:break-word}
+.fiche-complet{font-size:15px;color:var(--gris);margin-top:8px}
+.fiche-sens{font-size:19px;letter-spacing:-.02em;line-height:1.3;margin-top:14px;font-weight:500}
+.fiche-sens::before{content:"« ";color:var(--acc)}
+.fiche-sens::after{content:" »";color:var(--acc)}
+.fiche-bar{height:3px;width:56px;background:var(--acc);border-radius:2px;margin:16px 0 0}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;border:1px solid var(--trait);border-radius:7px;
+  padding:2px 8px;color:var(--gris);background:var(--carte)}
+.badge.F{color:var(--rose);border-color:color-mix(in srgb,var(--rose) 30%,transparent)}
+.badge.M{color:var(--bleu);border-color:color-mix(in srgb,var(--bleu) 30%,transparent)}
+.badge.X{color:var(--violet);border-color:color-mix(in srgb,var(--violet) 30%,transparent)}
+.btns{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 0}
+.btns.grow>*{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 15px;border-radius:10px;border:1px solid var(--trait);background:var(--carte);
+  font-size:14px;font-weight:500;letter-spacing:-.01em}
+.btn:active{background:var(--fond2)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--surAcc)}
+.btn.pri svg{fill:currentColor}
+.btn.gold{background:var(--or);border-color:var(--or);color:#fff}
+.btn.gold svg{fill:currentColor}
+.btn.dang{color:#B32424;border-color:rgba(179,36,36,.2)}
+.btn.wide{width:100%}
+.sect{margin:26px 0 10px;display:flex;align-items:baseline;gap:10px}
+.sect h2{font-size:15px;font-weight:600}
+.sect .cnt{font-size:12.5px;color:var(--gris2)}
+.sect .sp{flex:1}
+.grille{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--trait2)}
+.cel{padding:12px 2px 12px 0;border-bottom:1px solid var(--trait2);min-width:0}
+.cel:nth-child(2n){padding-left:14px;border-left:1px solid var(--trait2)}
+.cel .l{font-size:12px;color:var(--gris)}
+.cel .v{font-size:16px;font-weight:500;letter-spacing:-.015em;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px}
+.cel .d{font-size:11.5px;color:var(--gris2);margin-top:2px;font-family:"IBM Plex Mono",monospace}
+.texte{font-size:15px;line-height:1.6;color:var(--texte);margin:0}
+.texte + .texte{margin-top:10px}
+.note{font-size:12.5px;color:var(--gris);line-height:1.5;margin-top:10px;padding:10px 12px;border-radius:10px;
+  background:var(--fond2);border:1px solid var(--trait2)}
+.note a{cursor:pointer;font-weight:500;text-decoration:none}
+.genre-barre{display:flex;height:6px;border-radius:4px;overflow:hidden;margin-top:8px;background:var(--trait2)}
+.genre-barre i{display:block;height:100%}
+.chart{position:relative;margin-top:4px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.chart .axe{font-family:"IBM Plex Mono",monospace;font-size:10px;fill:var(--gris2)}
+.chart .tip{position:absolute;top:-6px;transform:translateX(-50%);background:var(--texte);color:var(--fond);
+  font-size:11.5px;padding:4px 8px;border-radius:7px;white-space:nowrap;pointer-events:none;font-family:"IBM Plex Mono",monospace;
+  opacity:0;transition:opacity .12s}
+.chart .tip.on{opacity:1}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--trait2);border-bottom:1px solid var(--trait2);margin-bottom:12px}
+.kpi{padding:12px 0 11px;min-width:0}
+.kpi + .kpi{border-left:1px solid var(--trait2);padding-left:12px}
+.kpi .l{font-size:11.5px;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .v{font-size:clamp(18px,5.4vw,24px);font-weight:600;letter-spacing:-.035em;margin-top:2px;white-space:nowrap}
+.kpi .d{font-size:11px;color:var(--gris2);font-family:"IBM Plex Mono",monospace;margin-top:1px;white-space:nowrap}
+.tend{font-family:"IBM Plex Mono",monospace;font-size:12px}
+.tend.up{color:#0B6B45}.tend.down{color:#B32424}
+html[data-theme="sombre"] .tend.up{color:#4ADE9B}
+html[data-theme="sombre"] .tend.down{color:#FF7B72}
+.pays{display:flex;flex-wrap:wrap;gap:6px}
+.pays span{font-size:12.5px;padding:5px 10px;border-radius:999px;border:1px solid var(--trait);background:var(--carte);display:inline-flex;gap:6px;align-items:center}
+.pays i{display:inline-block;height:6px;border-radius:3px;background:var(--acc);opacity:.75}
+.wrapchips{display:flex;flex-wrap:wrap;gap:7px}
+.parts{display:grid;gap:8px}
+.part{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--trait);border-radius:var(--r);background:var(--carte);text-align:left;width:100%}
+.part .pn{font-weight:600;font-size:15.5px}
+.part .ps{font-size:12.5px;color:var(--gris)}
+.src{font-size:11.5px;color:var(--gris2);margin-top:26px;line-height:1.5}
+.trad{display:inline-flex;align-items:center;gap:5px}
+.trad i{font-style:normal;width:18px;height:18px;border-radius:5px;display:inline-grid;place-items:center;font-size:11px;
+  background:var(--fond2);border:1px solid var(--trait2);color:var(--texte)}
+
+/* ---------------- fenêtre modale ---------------- */
+.mdl-bg{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.34);
+  display:flex;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:560px){.mdl-bg{align-items:center;padding:20px}}
+.mdl{background:var(--fond);width:100%;max-width:500px;border-radius:16px 16px 0 0;
+  box-shadow:var(--ombre);max-height:92vh;overflow:auto;overscroll-behavior:contain;
+  padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:mte .2s cubic-bezier(.22,.7,.3,1)}
+@media(min-width:560px){.mdl{border-radius:16px}}
+.mdl h3{font-size:17px;margin-bottom:2px}
+.mdl .sous{font-size:13px;color:var(--gris);margin-bottom:14px}
+.champ{margin:16px 0}
+.champ>label,.champ>.lab{display:block;font-size:12.5px;color:var(--gris);margin-bottom:7px}
+input[type=text],input[type=number]{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--trait);
+  background:var(--carte);color:var(--texte);font-size:15px;-webkit-appearance:none;appearance:none}
+input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transparent}
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.origs{max-height:212px;overflow:auto;padding:2px;margin:-2px}
+
+/* ---------------- réglages ---------------- */
+.bloc{border:1px solid var(--trait);border-radius:var(--r);margin:12px 0;overflow:hidden;background:var(--carte)}
+.bloc-h{padding:13px 14px;font-weight:500;font-size:14.5px;border-bottom:1px solid var(--trait2);display:flex;align-items:center;gap:9px}
+.bloc-b{padding:14px}
+.lig{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--trait2)}
+.lig:first-child{border-top:0;padding-top:0}
+.lig:last-child{padding-bottom:0}
+.lig .l{flex:1;min-width:0;font-size:14px}
+.lig .d{font-size:12px;color:var(--gris);margin-top:2px}
+.seg{display:inline-flex;border:1px solid var(--trait);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+.seg button{padding:7px 11px;font-size:13px;color:var(--gris);border-right:1px solid var(--trait)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--acc);color:var(--surAcc)}
+.page-h{padding:26px 0 18px;border-bottom:1px solid var(--trait)}
+.page-h .hero-val{margin-top:4px}
+.logo-grand{display:block;width:min(260px,70%);margin:6px auto 0}
+
+/* ---------------- ma liste ---------------- */
+.cdc-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cdc{position:relative;text-align:left;padding:14px 14px 12px;border-radius:16px;border:1px solid var(--trait);background:var(--carte);min-width:0;cursor:pointer}
+.cdc::before{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--or) 16%,transparent),transparent 60%)}
+.cdc .cn{font-size:21px;font-weight:600;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+.cdc .cs{font-size:12px;color:var(--gris);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:31px;position:relative}
+.cdc .ce{position:absolute;top:10px;right:10px;color:var(--or)}
+.cdc .cf{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;color:var(--gris2);position:relative}
+.match{border-color:color-mix(in srgb,var(--rose) 40%,transparent)}
+.match::before{background:linear-gradient(140deg,color-mix(in srgb,var(--rose) 16%,transparent),color-mix(in srgb,var(--lavande) 14%,transparent) 70%)}
+
+/* ---------------- découvrir : les cartes ---------------- */
+.dec-h{padding:14px 0 4px;text-align:center}
+.dec-h .hero-lbl{margin:0}
+.dec-h .hero-val{font-size:clamp(24px,7vw,32px)}
+.dec-h .chips{justify-content:flex-start;margin:12px -18px 0;padding:2px 18px}
+@media(min-width:560px){.dec-h .chips{justify-content:center}}
+.sep{flex:0 0 1px;background:var(--trait);margin:4px 2px}
+.dec-opts{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}
+.pile{position:relative;height:min(460px,calc(100vh - 330px - env(safe-area-inset-bottom)));min-height:330px;margin:18px auto 0;max-width:400px;touch-action:none;user-select:none;-webkit-user-select:none}
+.carte{position:absolute;inset:0;border-radius:28px;background:var(--carte);border:1px solid var(--trait);box-shadow:var(--ombre2);
+  padding:22px 22px 18px;display:flex;flex-direction:column;overflow:hidden;will-change:transform;
+  transition:transform .35s cubic-bezier(.22,.9,.3,1),opacity .3s}
+.carte.drag{transition:none}
+.carte::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 70% at 50% 0%,color-mix(in srgb,var(--cc) 17%,transparent),transparent 72%)}
+.carte.F{--cc:var(--rose)}.carte.M{--cc:var(--bleu)}.carte.X{--cc:var(--violet)}
+.carte > *{position:relative}
+.c-haut{display:flex;align-items:center;gap:8px}
+.c-haut .sp{flex:1}
+.c-rang{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--gris)}
+.c-nom{font-size:clamp(42px,13vw,60px);font-weight:600;letter-spacing:-.055em;line-height:1;margin-top:auto;word-break:break-word}
+.c-complet{font-size:14px;color:var(--gris);margin-top:6px}
+.c-sens{font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.3;margin-top:12px}
+.c-sens q{quotes:"« " " »"}
+.c-sens q::before,.c-sens q::after{color:var(--cc)}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.c-spark{margin-top:14px;height:44px}
+.c-spark svg{width:100%;height:44px;display:block}
+.c-pq{margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--gris);display:flex;gap:6px;align-items:flex-start}
+.c-pq b{color:var(--texte);font-weight:500}
+.c-pq svg{flex:0 0 auto;margin-top:2px;color:var(--cc)}
+.carte.dos1{transform:translateY(12px) scale(.955);opacity:.9}
+.carte.dos2{transform:translateY(24px) scale(.91);opacity:.6}
+.carte.dos1,.carte.dos2{pointer-events:none}
+.tampon{position:absolute;top:26px;padding:6px 12px;border-radius:10px;border:3px solid;font-weight:700;font-size:22px;letter-spacing:.02em;
+  opacity:0;pointer-events:none;text-transform:uppercase;z-index:3}
+.tampon.oui{left:18px;color:var(--rose);border-color:var(--rose);transform:rotate(-14deg)}
+.tampon.non{right:18px;color:var(--gris);border-color:var(--gris);transform:rotate(14deg)}
+.tampon.cdc{left:50%;top:auto;bottom:90px;transform:translateX(-50%) rotate(-6deg);color:var(--or);border-color:var(--or);white-space:nowrap}
+.actions{display:flex;justify-content:center;align-items:center;gap:14px;margin:16px 0 4px}
+.rond{border-radius:50%;display:grid;place-items:center;background:var(--carte);border:1px solid var(--trait);box-shadow:var(--ombre);transition:transform .12s}
+.rond:active{transform:scale(.9)}
+.rond.p{width:46px;height:46px;color:var(--gris)}
+.rond.g{width:64px;height:64px}
+.rond.m{width:54px;height:54px}
+.rond.non svg{color:var(--gris)}
+.rond.oui{color:var(--rose)}
+.rond.oui svg{fill:currentColor}
+.rond.cdc{color:var(--or)}
+.rond.cdc svg{fill:currentColor}
+.dec-stats{display:flex;justify-content:center;gap:16px;font-size:12px;color:var(--gris2);margin-top:8px}
+.dec-stats b{color:var(--texte);font-weight:500}
+.profil{margin-top:22px}
+.barres{display:grid;gap:8px}
+.barre-l{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:10px;font-size:12.5px}
+.barre-l span:first-child{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.barre-l .b{height:7px;border-radius:4px;background:var(--trait2);overflow:hidden}
+.barre-l .b i{display:block;height:100%;background:var(--acc);border-radius:4px}
+.barre-l .p{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--gris2);text-align:right}
+@keyframes vole{0%{transform:translate(-50%,0) scale(.6);opacity:0}20%{opacity:1}100%{transform:translate(-50%,-160px) scale(1.4);opacity:0}}
+.envol{position:fixed;left:50%;z-index:80;pointer-events:none;animation:vole .9s ease-out forwards;font-size:34px}
+
+/* ---------------- toast ---------------- */
+.toast{position:fixed;left:50%;transform:translate(-50%,90px);bottom:calc(var(--tab) + 14px);z-index:70;
+  background:var(--texte);color:var(--fond);border-radius:11px;padding:11px 14px;font-size:13.5px;
+  display:flex;align-items:center;gap:14px;max-width:calc(100% - 28px);box-shadow:var(--ombre);
+  opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.22,.7,.3,1),opacity .22s}
+.toast.on{transform:translate(-50%,0);opacity:1}
+.toast.agir{pointer-events:auto}
+.toast-act{color:var(--fond);font-weight:600;text-decoration:underline;text-underline-offset:3px;flex:0 0 auto}
+
+/* ---------------- chargement ---------------- */
+.charge{padding:60px 0;text-align:center;color:var(--gris);font-size:14px}
+.charge img{width:min(240px,64%);display:block;margin:0 auto 18px}
+.charge .barre{height:3px;width:120px;margin:16px auto 0;border-radius:2px;background:var(--trait2);overflow:hidden;position:relative}
+.charge .barre i{position:absolute;top:0;bottom:0;width:40%;background:var(--lavande);border-radius:2px;animation:glisse 1s ease-in-out infinite}
+@keyframes glisse{from{left:-40%}to{left:100%}}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><img src="icons/logo-marque.png" alt="" width="34" height="28"><b><em>baby</em><span>Name</span></b></div>
+    <button class="ver" id="ver-chip" data-act="journal" title="Voir les nouveautés"></button>
+    <div class="top-sp"></div>
+    <button class="iconbtn" data-act="hasard" aria-label="Un prénom au hasard" title="Un prénom au hasard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/></svg>
+    </button>
+    <button class="iconbtn" data-act="theme" aria-label="Changer de thème" title="Clair / sombre">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap" id="v-noms"><div class="charge" id="charge"><img src="icons/logo.png" alt="babyName">Chargement de 157 000 prénoms…<div class="barre"><i></i></div></div></main>
+<main class="wrap hide" id="v-dec"></main>
+<main class="wrap hide" id="v-favs"></main>
+<main class="wrap hide" id="v-plus"></main>
+
+<div class="rail" id="rail" aria-label="Index alphabétique"></div>
+<div class="bulle" id="bulle"></div>
+
+<nav class="tabs"><div class="tabs-in" id="tabs"></div></nav>
+
+<div id="sheet"></div>
+<div id="modal"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   BabyName — prénoms de bébé, fille et garçon
+   Une seule page, aucune dépendance. Les données (data/names.js)
+   sont chargées à part ; goûts et réglages restent sur l'appareil.
+   ============================================================ */
+const VERSION = "2.0.0";
+const DATA_V = "2";                 // à incrémenter quand data/names.js change
+const JOURNAL = [
+  { v:"2.0.0", d:"2026-09-25", t:"Découvrir, J'aime et coups de cœur", l:[
+    "Nouvel onglet Découvrir : des cartes à balayer, à droite j'aime, à gauche non, vers le haut coup de cœur.",
+    "Les propositions s'inspirent de tes goûts : racine, origine, sonorité, finale, époque, tradition.",
+    "J'aime et coups de cœur sont distingués partout ; Ma liste les range à part.",
+    "Mode duo : partage tes goûts par lien, ton ou ta partenaire voit vos prénoms en commun.",
+    "Nom de famille dans les réglages : chaque prénom s'affiche en entier, avec les initiales.",
+    "Filtre par tradition religieuse, drapeaux pour les origines.",
+    "Environ 18 000 prénoms de plus avec une origine ou une formation expliquée, d'après le Wiktionnaire et l'analyse des prénoms.",
+    "Le bébé reste centré quand il pivote. Nouveau logo et icônes pour l'écran d'accueil."
+  ]},
+  { v:"1.0.0", d:"2026-09-25", t:"Première version", l:[
+    "Plus de 150 000 prénoms : naissances en France de 1900 à 2025 (INSEE), aux États-Unis depuis 1880, et usage dans une cinquantaine de pays.",
+    "Origine, signification, étymologie et fête pour près de 2 000 prénoms racines, transmises à leurs variantes, graphies proches et prénoms composés.",
+    "Le bébé de l'accueil pivote : fille, garçon ou les deux, et la liste suit.",
+    "Index alphabétique sur le côté : la lettre en cours grossit à mesure qu'on défile."
+  ]}
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const fmtN = n => Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " ");
+const ROW = 64;
+const LETTRES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+
+/* ---------------- stockage local ---------------- */
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("babyname." + k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("babyname." + k, JSON.stringify(v)); } catch(e){} }
+};
+
+/* ---------------- état ---------------- */
+const etat = {
+  mode: store.get("mode", "F"),          // F fille, M garçon, T les deux
+  tri: "az", q: "", dans: "nom",
+  orig: "", rel: "", minPop: 0, lmin: 0, lmax: 0, avecSens: false,
+  vue: "noms",
+  favGenre: "T",
+  style: store.get("style", "gouts"),    // découvrir : gouts, tendance, classiques, rares
+};
+// goûts : { n, t, l } — l = 1 j'aime, 2 coup de cœur
+let gouts = store.get("gouts", null);
+if(!gouts){ gouts = store.get("favs", []).map(f => ({ n:f.n, t:f.t, l:1 })); store.set("gouts", gouts); }
+let vus = new Set(store.get("vus", []));
+let partenaire = store.get("partenaire", null);   // { nom, g:[{n,l}] }
+let nomFamille = store.get("nomFamille", "");
+let theme = store.get("theme", "auto");
+
+/* ---------------- thème ---------------- */
+const mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+function appliquerTheme(){
+  const sombre = theme === "sombre" || (theme === "auto" && mq && mq.matches);
+  document.documentElement.setAttribute("data-theme", sombre ? "sombre" : "clair");
+  document.documentElement.setAttribute("data-mode", etat.mode);
+  const m = document.querySelector('meta[name="theme-color"]');
+  if(m) m.content = sombre ? "#0d0d10" : "#ffffff";
+}
+if(mq && mq.addEventListener) mq.addEventListener("change", appliquerTheme);
+appliquerTheme();
+
+/* ---------------- toast ---------------- */
+let _toastT = null;
+function toast(msg, action){
+  const t = $("#toast");
+  t.innerHTML = '<span>' + esc(msg) + '</span>' + (action ? '<button class="toast-act">' + esc(action.label) + '</button>' : "");
+  t.classList.toggle("agir", !!action);
+  if(action) t.querySelector(".toast-act").onclick = () => { action.fn(); t.classList.remove("on"); };
+  t.classList.add("on");
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => t.classList.remove("on"), action ? 4200 : 2200);
+}
+
+/* ============================================================
+   Illustrations : bébé fille, bébé garçon, les deux
+   ============================================================ */
+function visage(o){
+  const f = o.fille;
+  const acc = f ? "var(--rose)" : "var(--bleu)";
+  let h = '<g transform="translate(' + o.x + ' ' + o.y + ') scale(' + o.s + ')">';
+  h += '<circle cx="-37" cy="4" r="8" fill="var(--peau2)"/><circle cx="37" cy="4" r="8" fill="var(--peau2)"/>';
+  h += '<circle cx="0" cy="0" r="38" fill="var(--peau)"/>';
+  h += '<path d="M-4 -37 q-4 -13 8 -15 q8 -1 7 7" fill="none" stroke="var(--trait-visage)" stroke-width="3.4" stroke-linecap="round"/>';
+  if(f){
+    h += '<g transform="translate(-22 -30) rotate(-18)"><path d="M0 0 L-14 -9 Q-17 0 -14 9 Z" fill="' + acc + '"/><path d="M0 0 L14 -9 Q17 0 14 9 Z" fill="' + acc + '"/><circle r="4.6" fill="' + acc + '" stroke="var(--carte)" stroke-width="1.6"/></g>';
+    h += '<path d="M-20 0.5 l-4.5 -2.2M20 0.5 l4.5 -2.2" stroke="var(--trait-visage)" stroke-width="2.2" stroke-linecap="round"/>';
+  }
+  h += '<path d="M-20 0 q6 6 12 0M8 0 q6 6 12 0" fill="none" stroke="var(--trait-visage)" stroke-width="3" stroke-linecap="round"/>';
+  h += '<ellipse cx="-23" cy="12" rx="7" ry="4.4" fill="var(--joue)" opacity=".55"/><ellipse cx="23" cy="12" rx="7" ry="4.4" fill="var(--joue)" opacity=".55"/>';
+  if(f) h += '<path d="M-6 17 q6 7 12 0" fill="none" stroke="var(--trait-visage)" stroke-width="3" stroke-linecap="round"/>';
+  else h += '<ellipse cx="0" cy="20" rx="13" ry="7.5" fill="' + acc + '"/><circle cx="0" cy="20" r="3.4" fill="var(--carte)" opacity=".85"/><circle cx="0" cy="31" r="5" fill="none" stroke="' + acc + '" stroke-width="2.6"/>';
+  return h + '</g>';
+}
+const SVG_F = '<svg viewBox="-60 -64 120 124" aria-hidden="true">' + visage({fille:true, x:0, y:0, s:1.18}) + '</svg>';
+const SVG_M = '<svg viewBox="-60 -64 120 124" aria-hidden="true">' + visage({fille:false, x:0, y:0, s:1.18}) + '</svg>';
+const SVG_T = '<svg viewBox="-60 -64 120 124" aria-hidden="true">' + visage({fille:false, x:22, y:10, s:.74}) + visage({fille:true, x:-21, y:-6, s:.74}) + '</svg>';
+const ICO_COEUR = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 20.2S3.8 15.4 3.8 9.3A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 8.2 2.3c0 6.1-8.2 10.9-8.2 10.9Z"/></svg>';
+const ICO_ETOILE = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8Z"/></svg>';
+const ICO_X = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>';
+const ICO_ANNUL = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>';
+const ICO_INFO = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.2"/></svg>';
+const ICO_RETOUR = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+const ICO_PART = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
+const ICO_ETINC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c.7 4.6 2.9 6.8 7.5 7.5-4.6.7-6.8 2.9-7.5 7.5-.7-4.6-2.9-6.8-7.5-7.5 4.6-.7 6.8-2.9 7.5-7.5Z"/></svg>';
+
+/* ============================================================
+   Origines, drapeaux et traditions
+   ============================================================ */
+const DRAPEAUX = {
+  "Latine":"it.png","Grecque":"gr.png","Hébraïque":"il.png","Arabe":"sa.png","Germanique":"de.png","Anglaise":"gb-eng.png",
+  "Anglo-saxonne":"gb-eng.png","Irlandaise":"ie.png","Gaélique":"ie.png","Française":"fr.png","Normande":"fr.png","Corse":"fr.png",
+  "Écossaise":"gb-sct.png","Celtique":"celte.svg","Galloise":"gb-wls.png","Scandinave":"se.png","Suédoise":"se.png","Slave":"slave.svg",
+  "Espagnole":"es.png","Bretonne":"bzh.svg","Persane":"ir.png","Turque":"tr.png","Sanskrite":"in.png","Indienne":"in.png",
+  "Japonaise":"jp.png","Araméenne":"sy.png","Basque":"eus.svg","Néerlandaise":"nl.png","Frisonne":"nl.png","Italienne":"it.png",
+  "Vietnamienne":"vn.png","Chinoise":"cn.png","Hawaïenne":"us-hi.png","Swahili":"tz.png","Occitane":"occ.svg","Provençale":"occ.svg",
+  "Catalane":"cat.svg","Coréenne":"kr.png","Amérindienne":"us.png","Américaine":"us.png","Afro-américaine":"us.png","Mandingue":"ml.png",
+  "Igbo":"ng.png","Yoruba":"ng.png","Akan":"gh.png","Tahitienne":"pf.png","Éthiopienne":"et.png","Ouest-africaine":"sn.png","Wolof":"sn.png",
+  "Berbère":"amazigh.svg","Kabyle":"amazigh.svg","Aborigène":"abo.svg","Australienne":"au.png","Égyptienne":"eg.png","Tupi":"br.png",
+  "Babylonienne":"iq.png","Cornique":"kw.svg","Portugaise":"pt.png","Roumaine":"ro.png","Albanaise":"al.png","Estonienne":"ee.png",
+  "Géorgienne":"ge.png","Finnoise":"fi.png","Hongroise":"hu.png","Arménienne":"am.png","Maltaise":"mt.png","Balte":"lt.png",
+  "Maorie":"nz.png","Zoulou":"za.png"
+};
+function famille(o){
+  o = (o || "").trim();
+  if(/^Création/.test(o)) return "Création moderne";
+  return o.split(/[ (]/)[0].trim();
+}
+function drapeau(o, grand){
+  const f = DRAPEAUX[famille(o)];
+  if(!f) return o ? '<span class="etin" aria-hidden="true">✦</span>' : "";
+  return '<img class="drap' + (grand ? " g" : "") + '" src="flags/' + f + '" alt="" loading="lazy" decoding="async">';
+}
+const TRADS = [
+  ["C", "Chrétienne", "✝"], ["J", "Juive", "✡"], ["M", "Musulmane", "☪"],
+  ["H", "Hindoue", "ॐ"], ["B", "Bouddhiste", "☸"], ["Y", "Mythologie", "⚡"]
+];
+const TRAD = Object.fromEntries(TRADS.map(t => [t[0], t]));
+
+/* ============================================================
+   Données
+   ============================================================ */
+let D, N = 0;
+let K, LET, GP, POP, TEND, RELB, ORIG, LONG;
+let parNom = new Map(), parCle = new Map();
+let sensCle = [];
+let ORIGINES = [];
+let ordres = {};
+let parRacine = null;
+
+function chargerDonnees(){
+  const s = document.createElement("script");
+  s.src = "data/names.js?v=" + DATA_V;
+  s.onload = () => { try { initDonnees(); demarrer(); } catch(e){ console.error(e); erreurChargement(e); } };
+  s.onerror = () => erreurChargement();
+  document.body.appendChild(s);
+}
+function erreurChargement(e){
+  $("#charge").innerHTML = '<div class="vide" style="border:0"><b>Impossible de charger data/names.js</b>Le fichier de données doit se trouver dans le dossier <span class="mono">data</span> à côté de cette page.' + (e ? '<br><span class="mono" style="font-size:11px">' + esc(e.message || e) + '</span>' : "") + '</div>';
+}
+
+function bitsRel(s){ let b = 0; for(const c of s || "") b |= 1 << "CJMHBY".indexOf(c); return b; }
+
+function initDonnees(){
+  D = window.BN_DATA;
+  const n = D.n; N = n.length;
+  K = new Array(N); LET = new Uint8Array(N); GP = new Uint8Array(N); LONG = new Uint8Array(N);
+  POP = new Float64Array(N); TEND = new Float64Array(N); RELB = new Uint8Array(N);
+  ORIG = new Int16Array(N).fill(-1);
+  const orIdx = new Map(), orN = [];
+  const getOr = nom => { if(!nom) return -1; let i = orIdx.get(nom); if(i === undefined){ i = orN.length; orIdx.set(nom, i); orN.push({nom, n:0}); } return i; };
+  const racFam = D.rac.map(r => getOr(famille(r[2])));
+  sensCle = D.rac.map(r => norm(r[3] + " " + r[5]));
+  for(let i = 0; i < N; i++){
+    const r = n[i], det = r[7] || {};
+    const k = norm(r[0]);
+    K[i] = k;
+    const c = k.charCodeAt(0) - 97;
+    LET[i] = c >= 0 && c < 26 ? c : 26;
+    LONG[i] = Math.min(255, k.replace(/[^a-z]/g, "").length);
+    GP[i] = r[1];
+    POP[i] = r[2] + r[4] * 0.25;
+    TEND[i] = r[3] + (r[3] ? 0 : r[4] * 0.0001);
+    RELB[i] = bitsRel(det.l);
+    parNom.set(r[0], i);
+    const prev = parCle.get(k);
+    if(prev === undefined || POP[i] > POP[prev]) parCle.set(k, i);
+    let o = -1;
+    if(typeof r[5] === "number" && r[5] >= 0) o = racFam[r[5]];
+    else if(Array.isArray(r[5])) o = racFam[r[5][0]];
+    else if(det.o != null) o = getOr(famille(D.orig[det.o]));
+    ORIG[i] = o;
+    if(o >= 0) orN[o].n++;
+  }
+  ORIGINES = orN.map((o, i) => ({...o, i})).sort((a, b) => b.n - a.n);
+  ordres.az = Int32Array.from({length:N}, (_, i) => i);
+}
+
+function ordre(t){
+  if(ordres[t]) return ordres[t];
+  const a = Int32Array.from({length:N}, (_, i) => i);
+  const sc = t === "pop" ? POP : TEND;
+  a.sort((x, y) => sc[y] - sc[x] || (K[x] < K[y] ? -1 : 1));
+  return ordres[t] = a;
+}
+
+function genreDe(i){ const g = GP[i]; return g >= 80 ? "F" : g <= 20 ? "M" : "X"; }
+function dansMode(i, m){ return m === "T" || (m === "F" ? GP[i] >= 35 : GP[i] <= 65); }
+function passeFiltres(i){
+  if(etat.orig !== "" && ORIG[i] !== +etat.orig) return false;
+  if(etat.rel){
+    if(etat.rel === "N"){ if(RELB[i]) return false; }
+    else if(!(RELB[i] & (1 << "CJMHBY".indexOf(etat.rel)))) return false;
+  }
+  if(etat.minPop && POP[i] < etat.minPop) return false;
+  if(etat.lmin && LONG[i] < etat.lmin) return false;
+  if(etat.lmax && LONG[i] > etat.lmax) return false;
+  if(etat.avecSens && !aSens(i)) return false;
+  return true;
+}
+function aSens(i){ const r = D.n[i]; return r[5] !== -1 || !!(r[7] && (r[7].m || r[7].e)); }
+
+/* infos d'étymologie d'un prénom */
+function infos(i){
+  const r = D.n[i], det = r[7] || {};
+  const ref = r[5], rel = r[6];
+  const auto = det.s === "a", wikt = det.s === "w";
+  if(Array.isArray(ref)){
+    const parts = ref.map(j => D.rac[j]);
+    return { rel:4, parts, auto, sens: parts.map(p => p[3]).join(" · "),
+      orig: [...new Set(parts.map(p => famille(p[2])))].map((o, k) => k ? o.toLowerCase() : o).join(" et ") };
+  }
+  if(ref >= 0){
+    const x = D.rac[ref];
+    return { rel, rac:x, ri:ref, sens:x[3], orig:x[2], fete: rel <= 3 || rel === 5 ? x[4] : "", ety:x[5], note:det.e, auto, wikt };
+  }
+  const o = det.o != null ? D.orig[det.o] : "";
+  return { rel:-1, orig:o, estime:!!det.x, ety:det.e, sens:det.m, wikt };
+}
+function tradsDe(i){ const s = (D.n[i][7] || {}).l || ""; return s.split("").map(c => TRAD[c]).filter(Boolean); }
+function sousTitre(i){
+  const inf = infos(i), r = D.n[i];
+  const dr = drapeau(inf.orig);
+  let t;
+  if(inf.sens && inf.sens !== "—") t = esc(famille(inf.orig)) + (inf.orig ? " · " : "") + esc(inf.sens);
+  else if(inf.orig === "Américaine" && inf.estime) t = "Prénom américain" + (r[4] ? " · " + fmtN(r[4]) + " naissances" : "");
+  else if(inf.orig) t = "Origine " + esc(inf.orig.toLowerCase()) + (inf.estime ? " (estimée)" : "");
+  else if(r[2]) t = fmtN(r[2]) + " naissance" + (r[2] > 1 ? "s" : "") + " en France";
+  else if(r[4]) t = fmtN(r[4]) + " naissances aux États-Unis";
+  else t = "Prénom rare";
+  return dr + '<span>' + t + '</span>';
+}
+function complet(nom){ return nomFamille ? nom + " " + nomFamille : ""; }
+function initiales(nom){ return (nom.split(/[- ]/).map(p => p.charAt(0).toUpperCase()).join("") + (nomFamille ? nomFamille.charAt(0).toUpperCase() : "")).split("").join("."); }
+
+/* ============================================================
+   Goûts : j'aime et coups de cœur
+   ============================================================ */
+function niveau(nom){ const g = gouts.find(x => x.n === nom); return g ? g.l : 0; }
+function carteGouts(){ const m = new Map(); gouts.forEach(g => m.set(g.n, g.l)); return m; }
+function fixerNiveau(nom, l, silencieux){
+  const avant = gouts.map(g => ({...g}));
+  gouts = gouts.filter(g => g.n !== nom);
+  if(l) gouts.unshift({ n:nom, t:Date.now(), l });
+  store.set("gouts", gouts);
+  if(!silencieux){
+    const msg = l === 2 ? "★ " + nom + " en coup de cœur" : l === 1 ? "♥ Tu aimes " + nom : nom + " retiré de ta liste";
+    toast(msg, l ? null : { label:"Annuler", fn(){ gouts = avant; store.set("gouts", gouts); apresGouts(); } });
+    if(l && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(l === 2 ? [8, 40, 8] : 8); } catch(e){}
+  }
+  apresGouts();
+}
+function cyclerNiveau(i){
+  // dans la liste : rien → j'aime → coup de cœur → rien
+  const nom = D.n[i][0], l = niveau(nom);
+  fixerNiveau(nom, (l + 1) % 3);
+}
+function apresGouts(){
+  _fenDeb = -1; dessinerFenetre();
+  majTabs();
+  if(etat.vue === "favs") vueFavs();
+  const fb = $("#fiche-btns");
+  if(fb) fb.innerHTML = boutonsFiche(fb.dataset.nom);
+  const ft = $("#fiche-fav-top");
+  if(ft){ const l = niveau(ft.dataset.nom); ft.className = "iconbtn coeur l" + l; ft.innerHTML = l === 2 ? ICO_ETOILE : ICO_COEUR; }
+}
+function iconeNiveau(l){ return l === 2 ? ICO_ETOILE : ICO_COEUR; }
+
+/* ============================================================
+   Liste
+   ============================================================ */
+let liste = new Int32Array(0);
+let premiereLettre = null;
+let railActif = false;
+
+function filtrer(){
+  const q = norm(etat.q.trim());
+  const base = ordre(etat.tri);
+  const m = etat.mode, d = D.n;
+  const ok = i => dansMode(i, m) && passeFiltres(i);
+  const res = [];
+  if(!q){
+    for(let x = 0; x < base.length; x++){ const i = base[x]; if(ok(i)) res.push(i); }
+  } else if(etat.dans === "sens"){
+    const mots = q.split(/\s+/).filter(Boolean);
+    for(let x = 0; x < base.length; x++){
+      const i = base[x], ref = d[i][5], det = d[i][7] || {};
+      let txt = "";
+      if(Array.isArray(ref)) txt = ref.map(j => sensCle[j]).join(" ");
+      else if(ref >= 0) txt = sensCle[ref];
+      if(det.m) txt += " " + norm(det.m);
+      if(!txt) continue;
+      if(mots.every(w => txt.includes(w)) && ok(i)) res.push(i);
+    }
+  } else {
+    const deb = [], dedans = [];
+    for(let x = 0; x < base.length; x++){
+      const i = base[x], k = K[i];
+      if(k.startsWith(q)){ if(ok(i)) deb.push(i); }
+      else if(q.length > 1 && k.includes(q)){ if(ok(i)) dedans.push(i); }
+    }
+    const ex = deb.filter(i => K[i] === q);
+    res.push(...ex, ...deb.filter(i => K[i] !== q), ...dedans);
+  }
+  liste = Int32Array.from(res);
+  premiereLettre = null;
+  if(etat.tri === "az" && !q){
+    premiereLettre = new Int32Array(27).fill(-1);
+    for(let p = liste.length - 1; p >= 0; p--) premiereLettre[LET[liste[p]]] = p;
+  }
+}
+
+function vueNoms(){
+  const v = $("#v-noms");
+  const faces = [["f", SVG_F], ["m", SVG_M], ["t", SVG_T]];
+  v.innerHTML =
+    '<section class="hero">' +
+      '<div class="scene" id="scene" role="button" tabindex="0" aria-label="Faire pivoter le bébé : fille, garçon ou les deux">' +
+        '<div class="prisme" id="prisme">' +
+          faces.map((f, k) => '<div class="face ' + f[0] + '" data-k="' + k + '">' + f[1] + '</div>').join("") +
+        '</div>' +
+      '</div>' +
+      '<div class="hero-lbl" id="hero-lbl"></div>' +
+      '<span class="hero-val num" id="hero-val"></span>' +
+      '<div class="hero-bar"></div>' +
+      '<div class="seg3" id="seg3" role="tablist">' +
+        '<button data-mode="F" role="tab">Fille</button>' +
+        '<button data-mode="M" role="tab">Garçon</button>' +
+        '<button data-mode="T" role="tab">Les deux</button>' +
+      '</div>' +
+      '<div class="hint">glisse ou touche le bébé pour le faire pivoter</div>' +
+    '</section>' +
+    '<div class="outils" id="outils">' +
+      '<div class="rech">' +
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>' +
+        '<input type="search" id="q" placeholder="Rechercher un prénom" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">' +
+        '<div class="portee" id="portee" role="group" aria-label="Chercher dans"><button data-dans="nom" title="Chercher dans le prénom">Nom</button><button data-dans="sens" title="Chercher dans la signification">Sens</button></div>' +
+        '<button class="x hide" id="qx" aria-label="Effacer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>' +
+      '</div>' +
+      '<div class="lig-outils">' +
+        '<div class="chips" id="tris">' +
+          '<button class="chip" data-tri="az">A → Z</button>' +
+          '<button class="chip" data-tri="pop">Populaires</button>' +
+          '<button class="chip" data-tri="tend">Tendance ' + D.annee + '</button>' +
+        '</div>' +
+        '<button class="iconbtn filtre-btn" data-act="filtres" aria-label="Filtres" title="Filtres : origine, tradition…">' +
+          '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>' +
+          '<i class="hide" id="filtre-pt"></i>' +
+        '</button>' +
+      '</div>' +
+      '<div class="compte"><span id="compte"></span><span id="compte-d"></span></div>' +
+    '</div>' +
+    '<div class="liste" id="liste"><div class="fen" id="fen"></div></div>';
+
+  const qi = $("#q");
+  qi.value = etat.q;
+  let qT = null;
+  qi.addEventListener("input", () => {
+    $("#qx").classList.toggle("hide", !qi.value);
+    clearTimeout(qT);
+    qT = setTimeout(() => { etat.q = qi.value; rafraichir(true); }, 110);
+  });
+  qi.addEventListener("keydown", e => { if(e.key === "Enter") qi.blur(); });
+  $("#qx").onclick = () => { qi.value = ""; etat.q = ""; $("#qx").classList.add("hide"); rafraichir(true); qi.focus(); };
+  const surClic = e => {
+    const b = e.target.closest("button"); if(!b) return;
+    if(b.dataset.tri){ etat.tri = b.dataset.tri; rafraichir(true); }
+    if(b.dataset.dans){ etat.dans = b.dataset.dans; if(etat.q) rafraichir(true); else majChips(); qi.placeholder = etat.dans === "sens" ? "lumière, paix, fleur…" : "Rechercher un prénom"; qi.focus(); }
+  };
+  $("#tris").addEventListener("click", surClic);
+  $("#portee").addEventListener("click", surClic);
+  $("#seg3").addEventListener("click", e => { const b = e.target.closest("button"); if(b) choisirMode(b.dataset.mode, true); });
+  $("#liste").addEventListener("click", e => {
+    const row = e.target.closest(".nrow"); if(!row) return;
+    const i = +row.dataset.i;
+    if(e.target.closest(".coeur")){ e.stopPropagation(); cyclerNiveau(i); return; }
+    ouvrirFiche(i);
+  });
+  $("#liste").addEventListener("keydown", e => {
+    if(e.key === "Enter" && e.target.classList.contains("nrow")) ouvrirFiche(+e.target.dataset.i);
+  });
+  initPrisme();
+  rafraichir(false);
+}
+
+function filtresActifs(){ return etat.orig !== "" || etat.rel || etat.minPop || etat.lmin || etat.lmax || etat.avecSens; }
+function majChips(){
+  document.querySelectorAll("#tris [data-tri]").forEach(b => b.classList.toggle("on", b.dataset.tri === etat.tri));
+  document.querySelectorAll("#portee [data-dans]").forEach(b => b.classList.toggle("on", b.dataset.dans === etat.dans));
+  const p = $("#filtre-pt"); if(p) p.classList.toggle("hide", !filtresActifs());
+}
+
+const LIB_MODE = { F:"Prénoms de fille", M:"Prénoms de garçon", T:"Prénoms fille & garçon" };
+let compteMode = {};
+function rafraichir(remonter){
+  if(!$("#liste")) return;
+  filtrer();
+  majChips();
+  if(!compteMode[etat.mode]){ let c = 0; for(let i = 0; i < N; i++) if(dansMode(i, etat.mode)) c++; compteMode[etat.mode] = c; }
+  $("#hero-lbl").textContent = LIB_MODE[etat.mode];
+  $("#hero-val").innerHTML = '<em>' + fmtN(compteMode[etat.mode]) + '</em> prénoms';
+  document.querySelectorAll("#seg3 button").forEach(b => b.classList.toggle("on", b.dataset.mode === etat.mode));
+  let resume = "";
+  if(etat.orig !== ""){ const o = ORIGINES.find(x => String(x.i) === etat.orig); if(o) resume += " · " + o.nom.toLowerCase(); }
+  if(etat.rel) resume += " · " + (etat.rel === "N" ? "sans tradition" : TRAD[etat.rel][1].toLowerCase());
+  $("#compte").innerHTML = '<b>' + fmtN(liste.length) + '</b> prénom' + (liste.length > 1 ? "s" : "") + (etat.q ? ' pour « ' + esc(etat.q.trim()) + ' »' : "") + esc(resume);
+  $("#compte-d").textContent = etat.tri === "az" ? "ordre alphabétique" : etat.tri === "pop" ? "les plus donnés" : "naissances " + (D.annee - 10) + "–" + D.annee;
+  const L = $("#liste");
+  L.style.height = Math.max(liste.length * ROW, 1) + "px";
+  if(!liste.length){
+    $("#fen").style.transform = "none";
+    $("#fen").innerHTML = '<div class="vide"><b>Aucun prénom</b>' + (etat.dans === "sens" ? "Essaie un autre mot : lumière, paix, force, fleur…" : "Vérifie l'orthographe ou élargis les filtres.") + '</div>';
+    L.style.height = "auto";
+  }
+  railActif = !!premiereLettre && liste.length > 40;
+  L.classList.toggle("avec-rail", railActif);
+  construireRail();
+  if(remonter){
+    const top = L.getBoundingClientRect().top + scrollY - hauteurCollante();
+    if(scrollY > top) window.scrollTo(0, top);
+  }
+  _fenDeb = -1;
+  dessinerFenetre();
+}
+
+function hauteurCollante(){
+  const o = $("#outils");
+  return ($("header.top").offsetHeight) + (o ? o.offsetHeight : 0);
+}
+function majOutilsTop(){ const o = $("#outils"); if(o) o.style.top = $("header.top").offsetHeight + "px"; }
+
+let _fenDeb = -1, _fenFin = -1;
+function dessinerFenetre(){
+  if(etat.vue !== "noms" || !liste.length || !$("#liste")){ majRail(); return; }
+  const top = $("#liste").getBoundingClientRect().top;
+  let deb = Math.max(0, Math.floor((-top) / ROW) - 8);
+  let fin = Math.min(liste.length, Math.ceil((innerHeight - top) / ROW) + 8);
+  if(deb !== _fenDeb || fin !== _fenFin){
+    _fenDeb = deb; _fenFin = fin;
+    const cg = carteGouts();
+    let h = "";
+    for(let p = deb; p < fin; p++) h += ligneHTML(liste[p], cg);
+    const f = $("#fen");
+    f.style.transform = "translateY(" + (deb * ROW) + "px)";
+    f.innerHTML = h;
+  }
+  majRail();
+}
+
+function ligneHTML(i, cg){
+  const r = D.n[i], g = genreDe(i);
+  const l = cg.get(r[0]) || 0;
+  let droite = "";
+  if(etat.tri === "pop" && r[2]) droite = '<span class="nr">' + fmtN(r[2]) + '</span>';
+  else if(etat.tri === "tend" && r[3]) droite = '<span class="nr">' + fmtN(r[3]) + '</span>';
+  const lib = l === 2 ? "Coup de cœur — toucher pour retirer" : l === 1 ? "J'aime — toucher pour passer en coup de cœur" : "J'aime";
+  return '<div class="nrow" data-i="' + i + '" tabindex="0" role="button">' +
+    '<span class="av ' + g + '">' + esc(r[0].charAt(0).toUpperCase()) + '</span>' +
+    '<span class="nmid"><span class="nn">' + esc(r[0]) + '</span><span class="ns">' + sousTitre(i) + '</span></span>' +
+    droite +
+    '<button class="coeur l' + l + '" aria-label="' + lib + '" title="' + lib + '">' + iconeNiveau(l) + '</button>' +
+  '</div>';
+}
+
+/* ---------------- index alphabétique ---------------- */
+function construireRail(){
+  const r = $("#rail");
+  if(!railActif){ r.classList.remove("on"); r.innerHTML = ""; return; }
+  r.innerHTML = LETTRES.map((l, k) => '<span data-k="' + k + '" class="' + (premiereLettre[k] >= 0 ? "pres" : "") + '">' + l + '</span>').join("");
+  placerRail();
+  _railAct = -1;
+}
+function placerRail(){
+  const r = $("#rail");
+  r.style.top = (hauteurCollante() + 10) + "px";
+  r.style.bottom = "calc(var(--tab) + 10px)";
+}
+let _railAct = -1;
+function majRail(){
+  const r = $("#rail");
+  if(!railActif || etat.vue !== "noms" || $("#sheet").innerHTML || !$("#liste")){ r.classList.remove("on"); return; }
+  const top = $("#liste").getBoundingClientRect().top;
+  r.classList.toggle("on", top < innerHeight * 0.55);
+  let p = Math.floor((hauteurCollante() - top + 2) / ROW);
+  p = Math.max(0, Math.min(liste.length - 1, p));
+  const k = LET[liste[p]];
+  if(k !== _railAct){ _railAct = k; loupe(k); }
+}
+function loupe(k){
+  const sp = $("#rail").children;
+  for(let j = 0; j < sp.length; j++){
+    const d = Math.abs(j - k);
+    const s = d === 0 ? 2.1 : d === 1 ? 1.55 : d === 2 ? 1.22 : 1;
+    sp[j].style.transform = "scale(" + s + ")";
+    sp[j].classList.toggle("act", d === 0);
+  }
+}
+function allerLettre(k){
+  if(!premiereLettre) return;
+  let p = premiereLettre[k];
+  if(p < 0){
+    for(let j = k + 1; j < 27 && p < 0; j++) p = premiereLettre[j];
+    if(p < 0) for(let j = k - 1; j >= 0 && p < 0; j--) p = premiereLettre[j];
+  }
+  if(p < 0) return;
+  const y = $("#liste").getBoundingClientRect().top + scrollY + p * ROW - hauteurCollante();
+  window.scrollTo(0, Math.ceil(y));
+}
+function initRail(){
+  const r = $("#rail"), b = $("#bulle");
+  let actif = false;
+  const lettreA = y => { const rc = r.getBoundingClientRect(); return Math.max(0, Math.min(25, Math.floor((y - rc.top) / rc.height * 26))); };
+  const suivre = e => {
+    const k = lettreA(e.clientY);
+    b.textContent = LETTRES[k];
+    b.style.top = Math.max(r.getBoundingClientRect().top, Math.min(e.clientY - 33, innerHeight - 140)) + "px";
+    b.classList.add("on");
+    loupe(k); _railAct = k;
+    allerLettre(k);
+  };
+  r.addEventListener("pointerdown", e => { actif = true; r.setPointerCapture(e.pointerId); suivre(e); e.preventDefault(); });
+  r.addEventListener("pointermove", e => { if(actif) suivre(e); });
+  const fin = () => { actif = false; setTimeout(() => b.classList.remove("on"), 350); };
+  r.addEventListener("pointerup", fin);
+  r.addEventListener("pointercancel", fin);
+}
+
+/* ---------------- le bébé qui pivote ----------------
+   Les trois visages sont empilés au même endroit. Changer de choix fait
+   tourner le visage courant sur son axe vertical jusqu'à la tranche, puis
+   le suivant arrive de l'autre côté : rien ne quitte jamais le centre. */
+const ORDRE_MODES = ["F", "M", "T"];
+let _faceK = 0, _pivot = null;
+function initPrisme(){
+  const sc = $("#scene"), pr = $("#prisme");
+  _faceK = ORDRE_MODES.indexOf(etat.mode);
+  pr.querySelectorAll(".face").forEach(f => {
+    const on = +f.dataset.k === _faceK;
+    f.style.transition = "none"; f.style.transform = "rotateY(0deg)"; f.style.visibility = on ? "visible" : "hidden";
+  });
+  let x0 = null, bouge = false, dx = 0;
+  const face = () => pr.querySelector('.face[data-k="' + _faceK + '"]');
+  sc.addEventListener("pointerdown", e => { x0 = e.clientX; bouge = false; dx = 0; sc.setPointerCapture(e.pointerId); });
+  sc.addEventListener("pointermove", e => {
+    if(x0 == null) return;
+    dx = e.clientX - x0;
+    if(Math.abs(dx) > 6) bouge = true;
+    if(bouge){ const f = face(); f.style.transition = "none"; f.style.transform = "rotateY(" + Math.max(-80, Math.min(80, dx * 0.6)) + "deg)"; }
+  });
+  const lacher = () => {
+    if(x0 == null) return;
+    x0 = null;
+    if(!bouge) return pivoter(1);
+    if(Math.abs(dx) > 30) return pivoter(dx < 0 ? 1 : -1);
+    const f = face(); f.style.transition = "transform .3s cubic-bezier(.3,1.4,.5,1)"; f.style.transform = "rotateY(0deg)";
+  };
+  sc.addEventListener("pointerup", lacher);
+  sc.addEventListener("pointercancel", lacher);
+  sc.addEventListener("keydown", e => {
+    if(e.key === "Enter" || e.key === " " || e.key === "ArrowRight"){ e.preventDefault(); pivoter(1); }
+    if(e.key === "ArrowLeft"){ e.preventDefault(); pivoter(-1); }
+  });
+}
+function pivoter(dir, versK){
+  const pr = $("#prisme"); if(!pr) return;
+  const k = versK !== undefined ? versK : (_faceK + dir + 3) % 3;
+  if(k === _faceK){ const f = pr.querySelector('.face[data-k="' + k + '"]'); f.style.transition = "transform .3s"; f.style.transform = "rotateY(0deg)"; return; }
+  const out = pr.querySelector('.face[data-k="' + _faceK + '"]'), inn = pr.querySelector('.face[data-k="' + k + '"]');
+  clearTimeout(_pivot);
+  pr.querySelectorAll(".face").forEach(f => { if(f !== out && f !== inn) f.style.visibility = "hidden"; });
+  out.style.transition = "transform .18s ease-in";
+  out.style.transform = "rotateY(" + (dir > 0 ? -90 : 90) + "deg)";
+  _faceK = k;
+  _pivot = setTimeout(() => {
+    out.style.visibility = "hidden";
+    inn.style.transition = "none";
+    inn.style.transform = "rotateY(" + (dir > 0 ? 90 : -90) + "deg)";
+    inn.style.visibility = "visible";
+    void inn.offsetWidth;
+    inn.style.transition = "transform .42s cubic-bezier(.2,1.35,.45,1)";
+    inn.style.transform = "rotateY(0deg)";
+  }, 180);
+  choisirMode(ORDRE_MODES[k], false);
+}
+function choisirMode(m, tourner){
+  if(tourner && $("#prisme")){
+    const k = ORDRE_MODES.indexOf(m);
+    if(k !== _faceK) pivoter(((k - _faceK + 3) % 3) === 1 ? 1 : -1, k);
+  }
+  if(m === etat.mode) return;
+  etat.mode = m;
+  store.set("mode", m);
+  appliquerTheme();
+  rafraichir(false);
+  if(etat.vue === "favs") vueFavs();
+  if(etat.vue === "dec") { file = []; vueDecouvrir(); }
+}
+
+/* ============================================================
+   Ma liste : coups de cœur, j'aime, matchs
+   ============================================================ */
+function carteMini(i, cls){
+  const r = D.n[i], inf = infos(i);
+  return '<div class="cdc ' + (cls || "") + '" data-i="' + i + '" role="button" tabindex="0">' +
+    (cls === "match" ? '<span class="ce" style="color:var(--rose)">' + ICO_COEUR + '</span>' : '<span class="ce">' + ICO_ETOILE.replace('fill="none"', 'fill="currentColor"') + '</span>') +
+    '<div class="cn">' + esc(r[0]) + '</div>' +
+    '<div class="cs">' + esc(inf.sens && inf.sens !== "—" ? inf.sens : inf.orig || "") + '</div>' +
+    '<div class="cf">' + drapeau(inf.orig) + '<span>' + esc(famille(inf.orig) || "—") + '</span>' + (nomFamille ? '<span style="margin-left:auto" class="mono">' + initiales(r[0]) + '</span>' : "") + '</div></div>';
+}
+function vueFavs(){
+  const v = $("#v-favs");
+  const ens = gouts.map(g => ({...g, i: parNom.get(g.n)})).filter(g => g.i !== undefined)
+    .filter(g => etat.favGenre === "T" || (etat.favGenre === "F" ? GP[g.i] >= 35 : GP[g.i] <= 65));
+  const cdc = ens.filter(g => g.l === 2), aime = ens.filter(g => g.l === 1);
+  const pSet = partenaire ? new Map(partenaire.g.map(x => [x.n, x.l])) : null;
+  const matchs = pSet ? ens.filter(g => pSet.has(g.n)) : [];
+  let h = '<section class="page-h">' +
+    '<div class="hero-lbl" style="margin:0">Ma liste</div>' +
+    '<span class="hero-val num"><em>' + fmtN(gouts.length) + '</em> prénom' + (gouts.length > 1 ? "s" : "") + '</span>' +
+    '<div class="hero-bar" style="margin-left:0"></div>' +
+    '<div class="compte" style="justify-content:flex-start;gap:14px;margin-top:12px;font-size:13px"><span style="color:var(--or)">★ <b>' + gouts.filter(g => g.l === 2).length + '</b> coups de cœur</span><span style="color:var(--rose)">♥ <b>' + gouts.filter(g => g.l === 1).length + '</b> j\'aime</span>' + (partenaire ? '<span>💞 <b>' + matchs.length + '</b> matchs</span>' : "") + '</div>' +
+  '</section>';
+  if(!gouts.length){
+    h += '<div class="vide" style="margin-top:10px"><b>Ta liste est vide</b>Balaye des cartes dans Découvrir, ou touche le cœur à côté d\'un prénom : une fois pour « j\'aime », deux fois pour « coup de cœur ».</div>' +
+      '<div class="btns grow"><button class="btn pri" data-vue="dec">Découvrir des prénoms</button><button class="btn" data-vue="noms">Parcourir la liste</button></div>';
+    v.innerHTML = h; return;
+  }
+  h += '<div class="sect"><div class="chips" id="fav-f">' +
+    [["T","Tous"],["F","Filles"],["M","Garçons"]].map(x => '<button class="chip' + (etat.favGenre === x[0] ? " on" : "") + '" data-g="' + x[0] + '">' + x[1] + '</button>').join("") + '</div></div>';
+  if(partenaire){
+    h += '<div class="sect"><h2>💞 Vos matchs</h2><span class="cnt">avec ' + esc(partenaire.nom || "ton ou ta partenaire") + '</span><span class="sp"></span><button class="chip" data-act="duo-oublier">Retirer</button></div>' +
+      (matchs.length ? '<div class="cdc-grille">' + matchs.map(g => carteMini(g.i, "match")).join("") + '</div>' : '<div class="note">Aucun prénom en commun pour l\'instant. Continuez à balayer : les matchs apparaîtront ici.</div>');
+  }
+  h += '<div class="sect"><h2 style="color:var(--or)">★ Coups de cœur</h2><span class="cnt">' + cdc.length + '</span></div>' +
+    (cdc.length ? '<div class="cdc-grille">' + cdc.map(g => carteMini(g.i)).join("") + '</div>' : '<div class="note">Balaye une carte vers le haut, ou touche deux fois le cœur, pour mettre un prénom en coup de cœur.</div>');
+  h += '<div class="sect"><h2 style="color:var(--rose)">♥ J\'aime</h2><span class="cnt">' + aime.length + '</span></div>' +
+    '<div class="liste" id="fav-liste" style="border-top:1px solid var(--trait2)">' +
+    (aime.length ? aime.map(g => ligneHTML(g.i, carteGouts())).join("") : '<div class="vide">Rien ici pour l\'instant.</div>') + '</div>';
+  h += '<div class="btns grow"><button class="btn" data-act="partager-favs">' + ICO_PART + ' Partager ma liste</button><button class="btn pri" data-act="duo">💞 Mode duo</button></div>';
+  v.innerHTML = h;
+  v.querySelectorAll(".cdc").forEach(c => c.addEventListener("click", () => ouvrirFiche(+c.dataset.i)));
+  const fl = $("#fav-liste");
+  if(fl) fl.addEventListener("click", e => {
+    const row = e.target.closest(".nrow"); if(!row) return;
+    const i = +row.dataset.i;
+    if(e.target.closest(".coeur")){ cyclerNiveau(i); return; }
+    ouvrirFiche(i);
+  });
+  $("#fav-f").addEventListener("click", e => { const b = e.target.closest("button"); if(b){ etat.favGenre = b.dataset.g; vueFavs(); } });
+}
+function texteFavs(){
+  const c = gouts.filter(g => g.l === 2).map(g => "★ " + g.n + (nomFamille ? " " + nomFamille : ""));
+  const a = gouts.filter(g => g.l === 1).map(g => "♥ " + g.n + (nomFamille ? " " + nomFamille : ""));
+  return "Nos prénoms préférés (babyName)\n" + (c.length ? "\nCoups de cœur :\n" + c.join("\n") + "\n" : "") + (a.length ? "\nJ'aime :\n" + a.join("\n") : "");
+}
+async function partager(titre, texte, url){
+  if(navigator.share){ try { await navigator.share(url ? { title:titre, text:texte, url } : { title:titre, text:texte }); return; } catch(e){ if(e.name === "AbortError") return; } }
+  copier(url ? texte + "\n" + url : texte);
+}
+function copier(t){
+  const ok = () => toast("Copié dans le presse-papiers");
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, () => copieSecours(t, ok));
+  else copieSecours(t, ok);
+}
+function copieSecours(t, ok){
+  const a = document.createElement("textarea"); a.value = t; a.style.position = "fixed"; a.style.opacity = "0";
+  document.body.appendChild(a); a.select(); try { document.execCommand("copy"); ok(); } catch(e){} a.remove();
+}
+
+/* ---------------- mode duo : partager ses goûts par lien ---------------- */
+function b64enc(s){ return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function b64dec(s){ s = s.replace(/-/g, "+").replace(/_/g, "/"); while(s.length % 4) s += "="; return decodeURIComponent(escape(atob(s))); }
+function lienDuo(prenom){
+  const donnees = { p: prenom || "", g: gouts.slice(0, 400).map(g => g.l === 2 ? g.n + "*" : g.n).join("|") };
+  return location.href.split("#")[0] + "#duo=" + b64enc(JSON.stringify(donnees));
+}
+function ouvrirDuo(){
+  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl" role="dialog" aria-label="Mode duo">' +
+    '<h3>💞 Mode duo</h3><div class="sous">Envoie tes goûts à ton ou ta partenaire. En ouvrant le lien, ses prénoms en commun avec toi apparaîtront dans sa liste, sous « Vos matchs ». Il ou elle t\'envoie le sien en retour.</div>' +
+    '<div class="champ"><label for="duo-p">Ton prénom (pour qu\'on sache de qui vient la liste)</label><input type="text" id="duo-p" value="' + esc(store.get("monPrenom", "")) + '" placeholder="Ex. Camille"></div>' +
+    '<div class="note">' + gouts.length + ' prénoms seront partagés (★ ' + gouts.filter(g => g.l === 2).length + ' coups de cœur). Rien ne passe par un serveur : tout est dans le lien.</div>' +
+    '<div class="btns grow"><button class="btn" data-act="fermer-modal-btn">Annuler</button><button class="btn pri" data-act="duo-envoyer">' + ICO_PART + ' Envoyer le lien</button></div>' +
+  '</div></div>';
+}
+function importerDuo(code){
+  try {
+    const d = JSON.parse(b64dec(code));
+    const g = (d.g || "").split("|").filter(Boolean).map(x => x.endsWith("*") ? { n:x.slice(0, -1), l:2 } : { n:x, l:1 });
+    partenaire = { nom: d.p || "", g };
+    store.set("partenaire", partenaire);
+    const cg = carteGouts();
+    const m = g.filter(x => cg.has(x.n)).length;
+    toast((d.p ? "Liste de " + d.p : "Liste du duo") + " reçue · " + m + " match" + (m > 1 ? "s" : ""));
+    allerVue("favs");
+  } catch(e){ toast("Lien duo illisible"); }
+}
+
+/* ============================================================
+   Découvrir : les cartes à balayer
+   ============================================================ */
+let file = [];                  // prochaines cartes
+let historique = [];            // pour annuler : { i, avant }
+let _pool = null, _poolCle = "";
+let _era = null;
+
+function eraDe(i){
+  if(!_era) _era = new Int16Array(N).fill(-1);
+  if(_era[i] !== -1) return _era[i];
+  const det = D.n[i][7] || {};
+  let v = 0;
+  if(det.f) v = medianeAnnee(det.f, 1900, 5) || 0;
+  else if(det.u) v = medianeAnnee(det.u, 1880, 10) || 0;
+  return _era[i] = v;
+}
+function pool(){
+  const cle = etat.mode + etat.orig + etat.rel + etat.minPop + etat.lmin + etat.lmax + etat.avecSens + etat.style;
+  if(_pool && _poolCle === cle) return _pool;
+  const a = [];
+  const seuil = etat.style === "rares" ? 30 : 150;
+  for(let i = 0; i < N; i++){
+    if(POP[i] < seuil) continue;
+    if(etat.style === "rares" && POP[i] > 2500) continue;
+    const nom = D.n[i][0];
+    if(/[- ]/.test(nom)) continue;
+    if(!dansMode(i, etat.mode) || !passeFiltres(i)) continue;
+    if(etat.style === "rares" && !aSens(i)) continue;
+    a.push(i);
+  }
+  _poolCle = cle;
+  return _pool = a;
+}
+function terminaison(k, n){ return k.length > n ? k.slice(-n) : k; }
+function phonCle(k){ return k.replace(/ph/g, "f").replace(/th/g, "t").replace(/y/g, "i").replace(/k/g, "c").replace(/h/g, "").replace(/(.)\1+/g, "$1"); }
+
+function profil(){
+  const p = { poids:0, rac:new Map(), orig:new Map(), t2:new Map(), t3:new Map(), ini:new Map(), era:[], rel:new Map(), pop:new Map(), long:0, phon:new Set() };
+  for(const g of gouts){
+    const i = parNom.get(g.n); if(i === undefined) continue;
+    const w = g.l === 2 ? 2.5 : 1;
+    const r = D.n[i], k = K[i];
+    p.poids += w;
+    const add = (m, key) => { if(key == null || key === -1 || key === "") return; m.set(key, (m.get(key) || 0) + w); };
+    if(typeof r[5] === "number" && r[5] >= 0) add(p.rac, r[5]);
+    add(p.orig, ORIG[i]);
+    add(p.t2, terminaison(k, 2)); add(p.t3, terminaison(k, 3)); add(p.ini, k.charAt(0));
+    for(let b = 0; b < 6; b++) if(RELB[i] & (1 << b)) add(p.rel, b);
+    add(p.pop, Math.floor(Math.log10(POP[i] + 1)));
+    const e = eraDe(i); if(e) p.era.push([e, w]);
+    p.long += LONG[i] * w;
+    p.phon.add(phonCle(k));
+  }
+  if(p.poids) p.long /= p.poids;
+  return p;
+}
+function scoreGouts(i, p){
+  const r = D.n[i], k = K[i], W = p.poids;
+  let s = 0;
+  if(typeof r[5] === "number" && r[5] >= 0 && p.rac.has(r[5])) s += 0.5;   // une variante : un peu, pas trop
+  s += 2.0 * ((p.orig.get(ORIG[i]) || 0) / W);
+  s += 1.4 * ((p.t3.get(terminaison(k, 3)) || 0) / W) + 1.0 * ((p.t2.get(terminaison(k, 2)) || 0) / W);
+  s += 0.4 * ((p.ini.get(k.charAt(0)) || 0) / W);
+  let rl = 0; for(let b = 0; b < 6; b++) if(RELB[i] & (1 << b)) rl = Math.max(rl, (p.rel.get(b) || 0) / W);
+  s += 0.8 * rl;
+  s += 0.8 * ((p.pop.get(Math.floor(Math.log10(POP[i] + 1))) || 0) / W);
+  const e = eraDe(i);
+  if(e && p.era.length){
+    let acc = 0, tw = 0;
+    for(const [y, w] of p.era){ acc += w * Math.max(0, 1 - Math.abs(y - e) / 30); tw += w; }
+    s += 1.2 * acc / tw;
+  }
+  s -= 0.12 * Math.abs(LONG[i] - p.long);
+  if(p.phon.has(phonCle(k))) s -= 4;      // simple graphie d'un prénom déjà aimé
+  return s;
+}
+function tirer(cands, poids){
+  let t = 0; for(const w of poids) t += w;
+  let x = Math.random() * t;
+  for(let j = 0; j < cands.length; j++){ x -= poids[j]; if(x <= 0) return j; }
+  return cands.length - 1;
+}
+function remplirFile(){
+  const P = pool();
+  const deja = new Set(file);
+  const cg = carteGouts();
+  const libre = i => !vus.has(D.n[i][0]) && !cg.has(D.n[i][0]) && !deja.has(i);
+  const style = etat.style === "gouts" && !gouts.length ? "tendance" : etat.style;
+  let cands = [], poids = [];
+  if(style === "gouts"){
+    const p = profil();
+    const sc = [];
+    for(const i of P) if(libre(i)) sc.push([scoreGouts(i, p) + Math.log10(POP[i] + 10) * 0.25, i]);
+    sc.sort((a, b) => b[0] - a[0]);
+    const top = sc.slice(0, 350);
+    cands = top.map(x => x[1]); poids = top.map(x => Math.exp(x[0] * 1.6));
+  } else {
+    let sc = [];
+    for(const i of P){
+      if(!libre(i)) continue;
+      let v;
+      if(style === "tendance") v = TEND[i];
+      else if(style === "classiques"){ const e = eraDe(i); v = e && e < 1975 ? POP[i] : 0; }
+      else v = aSens(i) ? 1 : 0;
+      if(v > 0) sc.push([v, i]);
+    }
+    sc.sort((a, b) => b[0] - a[0]);
+    sc = sc.slice(0, style === "rares" ? 4000 : 600);
+    cands = sc.map(x => x[1]); poids = sc.map(x => style === "rares" ? 1 : Math.sqrt(x[0]));
+  }
+  // diversité : une seule carte par famille de prénoms dans la file et parmi les dernières vues
+  const racDe = i => { const r = D.n[i][5]; return typeof r === "number" && r >= 0 ? r : -1 - i; };
+  const familles = new Set(file.map(racDe).concat(historique.slice(-20).map(h => racDe(h.i))));
+  let garde = 0;
+  while(file.length < 12 && cands.length && garde++ < 200){
+    const j = tirer(cands, poids);
+    const i = cands[j];
+    cands.splice(j, 1); poids.splice(j, 1);
+    if(familles.has(racDe(i))) continue;
+    familles.add(racDe(i));
+    file.push(i);
+  }
+}
+function pourquoi(i){
+  if(etat.style !== "gouts" || !gouts.length){
+    return etat.style === "classiques" ? "Un classique qui a traversé les générations" :
+      etat.style === "rares" ? "Un prénom rare, avec une histoire" : "En vogue en ce moment";
+  }
+  const r = D.n[i], k = K[i];
+  let meilleur = null;
+  for(const g of gouts){
+    const j = parNom.get(g.n); if(j === undefined) continue;
+    const rj = D.n[j];
+    let s = 0, txt = "";
+    if(typeof r[5] === "number" && r[5] >= 0 && r[5] === rj[5]){ s = 5; txt = "de la même famille que <b>" + esc(g.n) + "</b>"; }
+    else if(terminaison(k, 3) === terminaison(K[j], 3) && ORIG[i] === ORIG[j]){ s = 4; txt = "même origine et même finale que <b>" + esc(g.n) + "</b>"; }
+    else if(terminaison(k, 3) === terminaison(K[j], 3)){ s = 3; txt = "sonne comme <b>" + esc(g.n) + "</b>"; }
+    else if(ORIG[i] === ORIG[j] && ORIG[i] >= 0){ s = 2; txt = "même origine que <b>" + esc(g.n) + "</b>"; }
+    else if(Math.abs(eraDe(i) - eraDe(j)) < 10 && eraDe(i)){ s = 1; txt = "de la même génération que <b>" + esc(g.n) + "</b>"; }
+    if(g.l === 2) s += 0.5;
+    if(s && (!meilleur || s > meilleur[0])) meilleur = [s, txt];
+  }
+  return meilleur ? "Parce que tu aimes… " + meilleur[1].charAt(0).toUpperCase() + meilleur[1].slice(1) : "Une proposition dans l'esprit de ta liste";
+}
+function spark(i){
+  const det = D.n[i][7] || {};
+  const s = det.f || det.u; if(!s) return "";
+  const max = Math.max(...s, 1), n = s.length;
+  let d = "";
+  s.forEach((v, k) => { d += (k ? "L" : "M") + (k / (n - 1) * 300).toFixed(1) + " " + (42 - v / max * 38).toFixed(1); });
+  return '<div class="c-spark"><svg viewBox="0 0 300 44" preserveAspectRatio="none" aria-hidden="true"><path d="' + d + ' L300 44 L0 44Z" fill="var(--cc)" opacity=".12"/><path d="' + d + '" fill="none" stroke="var(--cc)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>' +
+    '<div style="display:flex;justify-content:space-between;font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--gris2);margin-top:2px"><span>' + (det.f ? "France 1900" : "États-Unis 1880") + '</span><span>' + (det.f ? D.annee : D.usMax) + '</span></div>';
+}
+function carteHTML(i, cls){
+  const r = D.n[i], inf = infos(i), g = genreDe(i), det = r[7] || {};
+  const lib = g === "F" ? "Fille" : g === "M" ? "Garçon" : "Mixte";
+  const rg = det.r;
+  let rang = "";
+  if(rg){ const v = r[1] >= 50 ? rg[0] || rg[2] : rg[2] || rg[0]; if(v) rang = "#" + v + " en " + D.annee; }
+  const tags = [];
+  if(inf.orig) tags.push('<span class="badge">' + drapeau(inf.orig) + esc(famille(inf.orig)) + '</span>');
+  tradsDe(i).forEach(t => tags.push('<span class="badge">' + t[2] + " " + t[1] + '</span>'));
+  if(inf.fete) tags.push('<span class="badge">Fête le ' + fete(inf.fete) + '</span>');
+  return '<div class="carte ' + g + " " + (cls || "") + '" data-i="' + i + '">' +
+    '<div class="tampon oui">J\'aime</div><div class="tampon non">Non</div><div class="tampon cdc">★ Coup de cœur</div>' +
+    '<div class="c-haut"><span class="badge ' + g + '">' + lib + '</span><span class="sp"></span><span class="c-rang">' + rang + '</span></div>' +
+    '<div class="c-nom">' + esc(r[0]) + '</div>' +
+    (nomFamille ? '<div class="c-complet">' + esc(r[0] + " " + nomFamille) + ' · <span class="mono">' + initiales(r[0]) + '</span></div>' : "") +
+    (inf.sens && inf.sens !== "—" ? '<div class="c-sens"><q>' + esc(inf.sens) + '</q></div>' : "") +
+    '<div class="c-tags">' + tags.join("") + '</div>' +
+    spark(i) +
+    '<div class="c-pq">' + ICO_ETINC + '<span>' + pourquoi(i) + '</span></div>' +
+  '</div>';
+}
+
+const LIB_STYLE = { gouts:"Selon mes goûts", tendance:"Tendance", classiques:"Classiques", rares:"Rares" };
+function vueDecouvrir(){
+  const v = $("#v-dec");
+  if(file.length < 4) remplirFile();
+  const nbA = gouts.filter(g => g.l === 1).length, nbC = gouts.filter(g => g.l === 2).length;
+  let h = '<section class="dec-h">' +
+    '<div class="hero-lbl">' + LIB_MODE[etat.mode] + (filtresActifs() ? " · filtres actifs" : "") + '</div>' +
+    '<span class="hero-val">Balaye, <em>choisis</em></span>' +
+    '<div class="chips" id="dec-opts">' + [["F","Fille"],["M","Garçon"],["T","Les deux"]].map(x => '<button class="chip' + (etat.mode === x[0] ? " on" : "") + '" data-m="' + x[0] + '">' + x[1] + '</button>').join("") +
+      '<span class="sep"></span>' + Object.entries(LIB_STYLE).map(([k, l]) => '<button class="chip' + (etat.style === k ? " on" : "") + '" data-s="' + k + '">' + (k === "gouts" ? ICO_ETINC + " " : "") + l + '</button>').join("") +
+      '<span class="sep"></span><button class="chip" data-act="filtres">Filtres' + (filtresActifs() ? " •" : "") + '</button></div>' +
+  '</section>';
+  h += '<div class="pile" id="pile">' + (file.length ? "" : '<div class="vide" style="border:0;padding-top:120px"><b>Plus de cartes</b>Tu as tout vu avec ces réglages. Change de style, élargis les filtres, ou remets les prénoms passés en jeu dans les réglages.</div>') + '</div>' +
+    '<div class="actions">' +
+      '<button class="rond p" data-act="dec-annuler" aria-label="Annuler le dernier choix" title="Annuler"' + (historique.length ? "" : " disabled") + '>' + ICO_ANNUL + '</button>' +
+      '<button class="rond g non" data-act="dec-non" aria-label="Non" title="Non (←)">' + ICO_X + '</button>' +
+      '<button class="rond m cdc" data-act="dec-cdc" aria-label="Coup de cœur" title="Coup de cœur (↑)">' + ICO_ETOILE.replace(/19/g, "24") + '</button>' +
+      '<button class="rond g oui" data-act="dec-oui" aria-label="J\'aime" title="J\'aime (→)">' + ICO_COEUR.replace(/19/g, "26") + '</button>' +
+      '<button class="rond p" data-act="dec-info" aria-label="Voir la fiche" title="Voir la fiche">' + ICO_INFO + '</button>' +
+    '</div>' +
+    '<div class="dec-stats"><span style="color:var(--or)">★ <b>' + nbC + '</b></span><span style="color:var(--rose)">♥ <b>' + nbA + '</b></span><span><b>' + fmtN(vus.size) + '</b> passés</span></div>';
+  h += profilHTML();
+  v.innerHTML = h;
+  empiler();
+  $("#dec-opts").addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    if(b.dataset.m) choisirMode(b.dataset.m, true);
+    if(b.dataset.s){ etat.style = b.dataset.s; store.set("style", etat.style); file = []; vueDecouvrir(); }
+  });
+}
+function empiler(){
+  const p = $("#pile"); if(!p) return;
+  if(!file.length) return;
+  const vis = file.slice(0, 3);
+  p.innerHTML = vis.map((i, k) => carteHTML(i, k === 1 ? "dos1" : k === 2 ? "dos2" : "")).reverse().join("");
+  const top = p.querySelector(".carte:not(.dos1):not(.dos2)");
+  if(top) activerCarte(top);
+}
+function activerCarte(c){
+  let x0 = 0, y0 = 0, dx = 0, dy = 0, actif = false, bouge = false;
+  const tO = c.querySelector(".tampon.oui"), tN = c.querySelector(".tampon.non"), tC = c.querySelector(".tampon.cdc");
+  c.addEventListener("pointerdown", e => { actif = true; bouge = false; x0 = e.clientX; y0 = e.clientY; dx = dy = 0; c.setPointerCapture(e.pointerId); c.classList.add("drag"); });
+  c.addEventListener("pointermove", e => {
+    if(!actif) return;
+    dx = e.clientX - x0; dy = e.clientY - y0;
+    if(Math.hypot(dx, dy) > 6) bouge = true;
+    c.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (dx * 0.06) + "deg)";
+    const haut = -dy > Math.abs(dx);
+    tO.style.opacity = !haut ? Math.max(0, Math.min(1, dx / 100)) : 0;
+    tN.style.opacity = !haut ? Math.max(0, Math.min(1, -dx / 100)) : 0;
+    tC.style.opacity = haut ? Math.max(0, Math.min(1, -dy / 100)) : 0;
+  });
+  const fin = () => {
+    if(!actif) return;
+    actif = false; c.classList.remove("drag");
+    if(!bouge){ c.style.transform = ""; ouvrirFiche(+c.dataset.i); return; }
+    if(-dy > 110 && -dy > Math.abs(dx)) return choisirCarte(2);
+    if(dx > 110) return choisirCarte(1);
+    if(dx < -110) return choisirCarte(0);
+    c.style.transform = ""; tO.style.opacity = tN.style.opacity = tC.style.opacity = 0;
+  };
+  c.addEventListener("pointerup", fin);
+  c.addEventListener("pointercancel", fin);
+}
+function choisirCarte(l){
+  if(!file.length) return;
+  const i = file[0], nom = D.n[i][0];
+  const c = $("#pile .carte:not(.dos1):not(.dos2)");
+  historique.push({ i, avant:niveau(nom), vu:vus.has(nom) });
+  if(historique.length > 50) historique.shift();
+  if(l) fixerNiveau(nom, l, true); else { vus.add(nom); store.set("vus", [...vus].slice(-20000)); }
+  if(l){ const e = document.createElement("div"); e.className = "envol"; e.textContent = l === 2 ? "★" : "♥"; e.style.color = l === 2 ? "var(--or)" : "var(--rose)"; e.style.top = "45%"; document.body.appendChild(e); setTimeout(() => e.remove(), 950); }
+  if(navigator.vibrate) try { navigator.vibrate(l === 2 ? [8, 40, 8] : 6); } catch(e){}
+  file.shift();
+  if(l && etat.style === "gouts") file = file.slice(0, 2);   // les goûts ont changé : on recalcule la suite
+  if(file.length < 5) remplirFile();
+  if(c){
+    const fx = l === 2 ? "translate(0,-130%) rotate(-4deg)" : l === 1 ? "translate(140%,20px) rotate(22deg)" : "translate(-140%,20px) rotate(-22deg)";
+    c.style.transform = fx; c.style.opacity = "0";
+    c.querySelector(l === 2 ? ".tampon.cdc" : l === 1 ? ".tampon.oui" : ".tampon.non").style.opacity = 1;
+    setTimeout(vueDecouvrir, 260);
+  } else vueDecouvrir();
+}
+function annulerCarte(){
+  const h = historique.pop(); if(!h) return;
+  const nom = D.n[h.i][0];
+  fixerNiveau(nom, h.avant, true);
+  if(!h.vu) vus.delete(nom);
+  store.set("vus", [...vus]);
+  file.unshift(h.i);
+  vueDecouvrir();
+}
+function profilHTML(){
+  if(gouts.length < 3) return '<div class="note" style="margin-top:22px">' + ICO_ETINC + ' Aime au moins 3 prénoms et les propositions « Selon mes goûts » s\'adapteront à ton style : origine, sonorités, époque, tradition.</div>';
+  const p = profil();
+  const tot = p.poids;
+  const orig = [...p.orig.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4);
+  const fins = [...p.t2.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const eras = p.era.length ? Math.round(p.era.reduce((a, [y, w]) => a + y * w, 0) / p.era.reduce((a, [, w]) => a + w, 0) / 10) * 10 : 0;
+  const ligne = (lbl, v) => '<div class="barre-l"><span>' + lbl + '</span><div class="b"><i style="width:' + Math.round(v * 100) + '%"></i></div><span class="p">' + Math.round(v * 100) + ' %</span></div>';
+  const oriNom = k => { const o = ORIGINES.find(x => x.i === k); return o ? o.nom : "—"; };
+  return '<section class="profil"><div class="sect"><h2>Ton style</h2><span class="sp"></span><span class="cnt">d\'après ' + gouts.length + ' prénoms</span></div>' +
+    '<div class="barres">' + orig.map(([k, w]) => ligne(drapeau(oriNom(k)) + " " + esc(oriNom(k)), w / tot)).join("") + '</div>' +
+    '<div class="grille" style="margin-top:14px">' +
+      '<div class="cel"><div class="l">Finales préférées</div><div class="v">' + fins.map(f => "-" + esc(f[0])).join(" ") + '</div></div>' +
+      '<div class="cel"><div class="l">Longueur moyenne</div><div class="v">' + p.long.toFixed(1) + ' lettres</div></div>' +
+      '<div class="cel"><div class="l">Génération</div><div class="v">' + (eras ? "années " + eras : "—") + '</div></div>' +
+      '<div class="cel"><div class="l">Coups de cœur</div><div class="v">' + gouts.filter(g => g.l === 2).length + ' / ' + gouts.length + '</div></div>' +
+    '</div></section>';
+}
+
+/* ============================================================
+   Fiche d'un prénom
+   ============================================================ */
+function fete(s){
+  if(!s) return "";
+  const [j, m] = s.split("/").map(Number);
+  if(!j || !m) return "";
+  return (j === 1 ? "1er" : j) + " " + MOIS[m - 1];
+}
+function syllabes(nom){
+  const k = norm(nom).replace(/[^a-z]/g, "");
+  if(!k) return 0;
+  let n = (k.match(/[aeiouy]+/g) || []).length;
+  if(k.length > 3 && /[^aeiouy]e$/.test(k)) n--;
+  if(/[^aeiouy]es$/.test(k) && k.length > 4) n--;
+  return Math.max(1, n);
+}
+const NUMERO = {1:"Meneur, indépendant",2:"Diplomate, sensible",3:"Créatif, expressif",4:"Stable, travailleur",
+  5:"Libre, curieux",6:"Protecteur, harmonieux",7:"Réfléchi, intérieur",8:"Ambitieux, déterminé",9:"Généreux, idéaliste",
+  11:"Intuitif, inspiré",22:"Bâtisseur, visionnaire"};
+function numerologie(nom){
+  let s = 0;
+  for(const c of norm(nom).replace(/[^a-z]/g, "")) s += ((c.charCodeAt(0) - 97) % 9) + 1;
+  while(s > 9 && s !== 11 && s !== 22) s = String(s).split("").reduce((a, b) => a + +b, 0);
+  return s;
+}
+function prochesDe(i){
+  const r = D.n[i];
+  if(typeof r[5] !== "number" || r[5] < 0) return [];
+  if(!parRacine){
+    parRacine = new Map();
+    for(let j = 0; j < N; j++){
+      const ref = D.n[j][5];
+      if(typeof ref === "number" && ref >= 0){ let a = parRacine.get(ref); if(!a) parRacine.set(ref, a = []); a.push(j); }
+    }
+  }
+  return (parRacine.get(r[5]) || []).filter(j => j !== i).sort((a, b) => POP[b] - POP[a]);
+}
+function indexRacine(rac){ return parNom.has(rac[0]) ? parNom.get(rac[0]) : parCle.get(norm(rac[0])); }
+
+function courbe(serie, debut, pas, id){
+  const W = 600, H = 150, pad = 18;
+  const max = Math.max(...serie, 1), n = serie.length;
+  const x = k => (k / (n - 1)) * W;
+  const y = v => H - pad - (v / max) * (H - pad - 8);
+  let d = "M0 " + y(serie[0]);
+  for(let k = 1; k < n; k++){
+    const x0 = x(k - 1), x1 = x(k), xm = (x0 + x1) / 2;
+    d += " C" + xm + " " + y(serie[k - 1]) + " " + xm + " " + y(serie[k]) + " " + x1 + " " + y(serie[k]);
+  }
+  const aire = d + " L" + W + " " + (H - pad) + " L0 " + (H - pad) + " Z";
+  const kmax = serie.indexOf(max);
+  let axes = "";
+  for(let k = 0; k < n; k++){ const a = debut + k * pas; if(a % (pas >= 10 ? 40 : 25) === 0) axes += '<text class="axe" x="' + x(k) + '" y="' + (H - 2) + '" text-anchor="' + (k === 0 ? "start" : k === n - 1 ? "end" : "middle") + '">' + a + '</text>'; }
+  return '<div class="chart" data-id="' + id + '">' +
+    '<svg viewBox="0 -4 ' + W + ' ' + (H + 4) + '" preserveAspectRatio="none" role="img" aria-label="Évolution des naissances">' +
+      '<defs><linearGradient id="g' + id + '" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--acc)" stop-opacity=".28"/><stop offset="1" stop-color="var(--acc)" stop-opacity="0"/></linearGradient></defs>' +
+      '<line x1="0" x2="' + W + '" y1="' + (H - pad) + '" y2="' + (H - pad) + '" stroke="var(--trait)" stroke-width="1"/>' +
+      '<path d="' + aire + '" fill="url(#g' + id + ')"/>' +
+      '<path d="' + d + '" fill="none" stroke="var(--acc)" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>' +
+      '<circle cx="' + x(kmax) + '" cy="' + y(max) + '" r="4" fill="var(--acc)" vector-effect="non-scaling-stroke"/>' +
+      '<line class="curseur" x1="0" x2="0" y1="0" y2="' + (H - pad) + '" stroke="var(--gris2)" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" opacity="0"/>' +
+      axes + '</svg><div class="tip"></div></div>';
+}
+function activerCourbe(el, serie, debut, pas, finA){
+  const svg = el.querySelector("svg"), tip = el.querySelector(".tip"), cur = el.querySelector(".curseur");
+  const n = serie.length;
+  const montrer = e => {
+    const rc = svg.getBoundingClientRect();
+    const k = Math.round(Math.max(0, Math.min(1, (e.clientX - rc.left) / rc.width)) * (n - 1));
+    const x = (k / (n - 1)) * 600;
+    cur.setAttribute("x1", x); cur.setAttribute("x2", x); cur.setAttribute("opacity", "1");
+    const a = debut + k * pas, b = Math.min(a + pas - 1, finA);
+    tip.textContent = (a === b ? a : a + "–" + b) + " · " + fmtN(serie[k]) + " / an";
+    tip.style.left = Math.max(60, Math.min(rc.width - 60, (k / (n - 1)) * rc.width)) + "px";
+    tip.classList.add("on");
+  };
+  el.addEventListener("pointermove", montrer);
+  el.addEventListener("pointerdown", montrer);
+  el.addEventListener("pointerleave", () => { tip.classList.remove("on"); cur.setAttribute("opacity", "0"); });
+}
+function medianeAnnee(serie, debut, pas){
+  const tot = serie.reduce((a, b) => a + b, 0);
+  if(!tot) return null;
+  let c = 0;
+  for(let k = 0; k < serie.length; k++){ c += serie[k]; if(c >= tot / 2) return debut + k * pas + Math.floor(pas / 2); }
+  return null;
+}
+
+const REL_TXT = {1:"Variante de", 2:"Graphie proche de", 3:"Forme dérivée de", 5:"Forme de", 6:"Formé sur"};
+function boutonsFiche(nom){
+  const l = niveau(nom);
+  return '<button class="btn' + (l === 1 ? " pri" : "") + '" data-act="niv" data-l="1">' + ICO_COEUR + (l === 1 ? " J'aime" : " J'aime") + '</button>' +
+    '<button class="btn' + (l === 2 ? " gold" : "") + '" data-act="niv" data-l="2">' + ICO_ETOILE + ' Coup de cœur</button>';
+}
+function ouvrirFiche(i, depuisHistorique){
+  if(!depuisHistorique) history.pushState({ fiche:i }, "", "#" + encodeURIComponent(D.n[i][0]));
+  rendreFiche(i);
+}
+function fermerFiche(){ $("#sheet").innerHTML = ""; document.body.style.overflow = ""; majRail(); }
+
+function rendreFiche(i){
+  const r = D.n[i], det = r[7] || {}, inf = infos(i), g = genreDe(i);
+  const nom = r[0], gp = r[1];
+  const lib = g === "F" ? "Fille" : g === "M" ? "Garçon" : "Mixte";
+  const l = niveau(nom);
+  const trads = tradsDe(i);
+  let h = '<div class="sheet" id="fiche-sc" data-g="' + g + '"><div class="sheet-top">' +
+    '<button class="iconbtn" data-act="retour" aria-label="Retour">' + ICO_RETOUR + '</button>' +
+    '<div class="t" id="fiche-t">' + esc(nom) + '</div>' +
+    '<button class="iconbtn coeur l' + l + '" id="fiche-fav-top" data-nom="' + esc(nom) + '" data-act="niv-cycle" aria-label="J\'aime / coup de cœur">' + iconeNiveau(l) + '</button>' +
+    '<button class="iconbtn" data-act="partager-fiche" aria-label="Partager">' + ICO_PART + '</button>' +
+  '</div><div class="sheet-in">';
+
+  h += '<section class="fiche-h">' +
+    '<div class="badges"><span class="badge ' + g + '">' + lib + (g === "X" ? " · " + gp + " % filles" : "") + '</span>' +
+    (inf.orig ? '<span class="badge">' + drapeau(inf.orig) + esc(inf.orig) + (inf.estime ? " · estimée" : "") + '</span>' : "") +
+    trads.map(t => '<span class="badge">' + t[2] + " " + t[1] + '</span>').join("") +
+    (inf.fete ? '<span class="badge">Fête le ' + fete(inf.fete) + '</span>' : "") + '</div>' +
+    '<h1 class="fiche-nom" id="fiche-nom">' + esc(nom) + '</h1>' +
+    (nomFamille ? '<div class="fiche-complet">' + esc(nom + " " + nomFamille) + ' · initiales <span class="mono">' + initiales(nom) + '</span></div>' : "") +
+    (inf.sens && inf.sens !== "—" ? '<div class="fiche-sens">' + esc(inf.sens) + '</div>' : "") +
+    '<div class="fiche-bar"></div>' +
+    '<div class="btns grow" id="fiche-btns" data-nom="' + esc(nom) + '">' + boutonsFiche(nom) + '</div>' +
+  '</section>';
+
+  const lettres = LONG[i];
+  const num = numerologie(nom);
+  const cel = (lb, v, d) => '<div class="cel"><div class="l">' + lb + '</div><div class="v">' + v + '</div>' + (d ? '<div class="d">' + d + '</div>' : "") + '</div>';
+  h += '<div class="sect"><h2>En bref</h2></div><div class="grille">' +
+    cel("Origine", inf.orig ? drapeau(inf.orig, true) + '<span>' + esc(famille(inf.orig)) + '</span>' : "Inconnue", inf.estime ? "d'après les pays où il est porté" : (inf.rel === 4 ? "prénom composé" : inf.wikt ? "d'après le Wiktionnaire" : "")) +
+    cel("Tradition", trads.length ? '<span style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:14px">' + trads.map(t => '<span class="trad"><i>' + t[2] + '</i>' + t[1] + '</span>').join("") + '</span>' : "Aucune en particulier", trads.length ? (det.le ? "estimée d'après l'usage" : "d'après l'histoire du prénom") : "prénom profane") +
+    cel("Fête", inf.fete ? fete(inf.fete) : "—", inf.fete ? "calendrier des saints" : "") +
+    cel("Lettres", lettres, "initiale " + esc(nom.charAt(0).toUpperCase())) +
+    cel("Syllabes", "≈ " + syllabes(nom), "à l'oral, en français") +
+    cel("Numérologie", num, NUMERO[num]) +
+    cel("Genre", lib, gp >= 50 ? gp + " % de filles" : (100 - gp) + " % de garçons") +
+    cel("Initiales", '<span class="mono">' + initiales(nom) + '</span>', nomFamille ? "avec " + esc(nomFamille) : "ajoute ton nom dans Réglages") +
+  '</div>';
+  h += '<div class="genre-barre"><i style="width:' + gp + '%;background:var(--rose)"></i><i style="width:' + (100 - gp) + '%;background:var(--bleu)"></i></div>';
+
+  // étymologie
+  let ety = "";
+  if(inf.rel === 4){
+    ety += '<p class="texte">' + (inf.auto ? "Prénom formé de deux prénoms accolés : " : "Prénom composé de ") + inf.parts.map(p => '<b>' + esc(p[0]) + '</b>').join(" et ") + '.</p><div class="parts" style="margin-top:12px">' +
+      inf.parts.map(p => {
+        const j = indexRacine(p);
+        return '<button class="part" ' + (j !== undefined ? 'data-ouvrir="' + j + '"' : "") + '><span class="av ' + p[1] + '">' + esc(p[0].charAt(0)) + '</span><span style="flex:1;min-width:0"><span class="pn">' + esc(p[0]) + '</span><br><span class="ps">' + drapeau(p[2]) + ' ' + esc(famille(p[2])) + ' · ' + esc(p[3]) + '</span></span></button>';
+      }).join("") + '</div>';
+    if(inf.auto) ety += '<div class="note">Décomposition établie automatiquement.</div>';
+  } else if(inf.rac){
+    const x = inf.rac;
+    if(inf.rel === 6 && inf.note){
+      ety += '<p class="texte">' + esc(inf.note) + '</p>';
+      if(x[5]) ety += '<p class="texte" style="color:var(--gris)"><b style="color:var(--texte)">' + esc(x[0]) + '</b> : ' + esc(x[5]) + '</p>';
+    } else if(x[5]) ety += '<p class="texte">' + esc(x[5]) + '</p>';
+    if(inf.rel > 0){
+      const j = indexRacine(x);
+      ety += '<div class="note">' + REL_TXT[inf.rel] + ' <a data-ouvrir="' + (j !== undefined ? j : "") + '">' + esc(x[0]) + '</a>' +
+        (inf.rel === 2 || inf.rel === 3 || inf.rel === 6 ? " — rapprochement établi automatiquement." : inf.rel === 5 ? " — d'après le Wiktionary." : ".") + '</div>';
+    }
+    if(x[6] >= 0 && D.rac[x[6]]){
+      const j = indexRacine(D.rac[x[6]]);
+      if(j !== undefined) ety += '<div class="note">Voir aussi <a data-ouvrir="' + j + '">' + esc(D.rac[x[6]][0]) + '</a>.</div>';
+    }
+  } else if(inf.ety){
+    ety = '<p class="texte">' + esc(inf.ety) + '</p>' + (inf.wikt ? '<div class="note">Source : Wiktionnaire (CC BY-SA).</div>' : "");
+  } else if(inf.estime && inf.orig){
+    ety = '<p class="texte">Pas encore d\'étymologie détaillée pour ce prénom. D\'après les pays où il est porté, son origine est vraisemblablement <b>' + esc(inf.orig.toLowerCase()) + '</b>.</p>';
+  } else {
+    ety = '<p class="texte">Pas d\'étymologie connue pour ce prénom, souvent une création récente ou une graphie originale.</p>';
+  }
+  h += '<div class="sect"><h2>Origine et signification</h2></div>' + ety;
+
+  const A = D.annee;
+  if(det.f){
+    const s = det.f, med = medianeAnnee(s, 1900, 5);
+    const rec = s[s.length - 2] * 5 + s[s.length - 1], avant = s[s.length - 3] * 5;
+    let tendance = "";
+    if(avant + rec > 20){
+      const pct = avant ? Math.round((rec / 6 - avant / 5) / (avant / 5) * 100) : 100;
+      tendance = pct > 8 ? '<span class="tend up">↗ +' + pct + ' %</span>' : pct < -8 ? '<span class="tend down">↘ ' + pct + ' %</span>' : '<span class="tend">→ stable</span>';
+    }
+    const rg = det.r || [0, 0, 0, 0];
+    const ord = n => n + (n === 1 ? "<sup>er</sup>" : "<sup>e</sup>");
+    const fille = rg[0] && (gp >= 50 || !rg[2]);
+    const rangTxt = fille ? ord(rg[0]) : rg[2] ? ord(rg[2]) : "—";
+    const rangD = fille ? "chez les filles" : rg[2] ? "chez les garçons" : "hors classement";
+    h += '<div class="sect"><h2>En France</h2><span class="sp"></span>' + tendance + '</div>' +
+      '<div class="kpis">' +
+        '<div class="kpi"><div class="l">Rang ' + A + '</div><div class="v num">' + rangTxt + '</div><div class="d">' + rangD + '</div></div>' +
+        '<div class="kpi"><div class="l">Naissances ' + A + '</div><div class="v num">' + fmtN((rg[1] || 0) + (rg[3] || 0)) + '</div><div class="d">bébés</div></div>' +
+        '<div class="kpi"><div class="l">Depuis 1900</div><div class="v num">' + fmtN(r[2]) + '</div><div class="d">porteurs</div></div>' +
+      '</div>' + courbe(s, 1900, 5, "fr") +
+      '<p class="texte" style="font-size:13px;color:var(--gris);margin-top:10px">Année record : <b style="color:var(--texte)">' + det.p[0] + '</b> avec ' + fmtN(det.p[1]) + ' naissances.' +
+      (med ? ' La moitié des porteurs sont nés avant ' + med + ' environ.' : "") + '</p>';
+  } else if(r[2]){
+    h += '<div class="sect"><h2>En France</h2></div><p class="texte">Prénom rare : <b>' + fmtN(r[2]) + '</b> naissance' + (r[2] > 1 ? "s" : "") + ' recensée' + (r[2] > 1 ? "s" : "") + (det.y ? ' entre ' + det.y[0] + ' et ' + det.y[1] : "") + '.</p>';
+  } else {
+    h += '<div class="sect"><h2>En France</h2></div><p class="texte" style="color:var(--gris)">Aucune naissance recensée par l\'INSEE (moins de 3 par an).</p>';
+  }
+  if(det.u){
+    h += '<div class="sect"><h2>Aux États-Unis</h2><span class="sp"></span><span class="cnt">depuis 1880</span></div>' +
+      '<div class="kpis">' +
+        '<div class="kpi"><div class="l">Naissances</div><div class="v num">' + fmtN(r[4]) + '</div><div class="d">1880–' + D.usMax + '</div></div>' +
+        '<div class="kpi"><div class="l">Année record</div><div class="v num">' + det.q[0] + '</div><div class="d">' + fmtN(det.q[1]) + ' bébés</div></div>' +
+        '<div class="kpi"><div class="l">Génération</div><div class="v num">' + (Math.floor((medianeAnnee(det.u, 1880, 10) || det.q[0]) / 10) * 10) + 's</div><div class="d">moitié née avant</div></div>' +
+      '</div>' + courbe(det.u, 1880, 10, "us");
+  } else if(r[4]){
+    h += '<div class="sect"><h2>Aux États-Unis</h2></div><p class="texte">' + fmtN(r[4]) + ' naissances depuis 1880.</p>';
+  }
+  if(det.c && det.c.length){
+    h += '<div class="sect"><h2>Porté aussi en</h2><span class="sp"></span><span class="cnt">par fréquence</span></div><div class="pays">' +
+      det.c.map((c, k) => '<span><i style="width:' + Math.max(6, 26 - k * 2.2) + 'px"></i>' + esc(D.pays[c]) + '</span>').join("") + '</div>';
+  }
+  const pr = prochesDe(i);
+  if(pr.length){
+    const cg = carteGouts();
+    h += '<div class="sect"><h2>Variantes et prénoms proches</h2><span class="sp"></span><span class="cnt">' + fmtN(pr.length) + '</span></div><div class="wrapchips">' +
+      pr.slice(0, 48).map(j => { const lj = cg.get(D.n[j][0]); return '<button class="chip lien" data-ouvrir="' + j + '"><span style="width:7px;height:7px;border-radius:50%;background:var(--' + ({F:"rose",M:"bleu",X:"violet"})[genreDe(j)] + ')"></span>' + esc(D.n[j][0]) + (lj === 2 ? ' <span style="color:var(--or)">★</span>' : lj === 1 ? ' <span style="color:var(--rose)">♥</span>' : "") + '</button>'; }).join("") + '</div>';
+  }
+  h += '<p class="src">Sources : INSEE, fichier des prénoms (France, 1900–' + A + ') ; Social Security Administration (États-Unis) ; firstname-database ; Wiktionnaire et Wiktionary (CC BY-SA). Les rapprochements automatiques, les origines et traditions « estimées » sont signalés comme tels. La tradition religieuse indique l\'histoire du prénom, pas une appartenance.</p>';
+  h += '</div></div>';
+
+  const sh = $("#sheet");
+  sh.innerHTML = h;
+  document.body.style.overflow = "hidden";
+  majRail();
+  const sc = $("#fiche-sc");
+  sc.scrollTop = 0;
+  sc.addEventListener("scroll", () => { $("#fiche-t").classList.toggle("on", $("#fiche-nom").getBoundingClientRect().bottom < 60); });
+  sc.addEventListener("click", e => { const o = e.target.closest("[data-ouvrir]"); if(o && o.dataset.ouvrir !== "") ouvrirFiche(+o.dataset.ouvrir); });
+  sc.querySelectorAll(".chart").forEach(el => {
+    if(el.dataset.id === "fr") activerCourbe(el, det.f, 1900, 5, A);
+    if(el.dataset.id === "us") activerCourbe(el, det.u, 1880, 10, D.usMax);
+  });
+  sh.dataset.i = i;
+}
+
+/* ============================================================
+   Filtres
+   ============================================================ */
+function ouvrirFiltres(){
+  const origs = ORIGINES.filter(o => o.n >= 20);
+  const chipO = (v, contenu) => '<button class="chip' + (etat.orig === v ? " on" : "") + '" data-o="' + v + '">' + contenu + '</button>';
+  const chipR = (v, contenu) => '<button class="chip' + (etat.rel === v ? " on" : "") + '" data-r="' + v + '">' + contenu + '</button>';
+  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl" role="dialog" aria-label="Filtres">' +
+    '<h3>Filtres</h3><div class="sous">S\'appliquent à la liste et aux cartes de Découvrir, en plus du choix fille, garçon ou les deux.</div>' +
+    '<div class="champ"><span class="lab">Origine</span><div class="chips wr origs" id="f-orig">' +
+      chipO("", "Toutes") + origs.map(o => chipO(String(o.i), drapeau(o.nom) + esc(o.nom) + ' <small>' + fmtN(o.n) + '</small>')).join("") +
+    '</div></div>' +
+    '<div class="champ"><span class="lab">Tradition religieuse</span><div class="chips wr" id="f-rel">' +
+      chipR("", "Toutes") + TRADS.map(t => chipR(t[0], t[2] + " " + t[1])).join("") + chipR("N", "Sans tradition particulière") +
+    '</div></div>' +
+    '<div class="champ"><span class="lab">Popularité</span><div class="seg" id="f-pop">' +
+      [[0,"Tous"],[100,"≥ 100"],[1000,"≥ 1 000"],[10000,"≥ 10 000"]].map(x => '<button data-v="' + x[0] + '" class="' + (etat.minPop === x[0] ? "on" : "") + '">' + x[1] + '</button>').join("") +
+    '</div><div style="font-size:12px;color:var(--gris2);margin-top:6px">naissances cumulées, France et États-Unis</div></div>' +
+    '<div class="champ"><span class="lab">Nombre de lettres</span><div class="deux"><input type="number" id="f-lmin" min="0" max="20" placeholder="min" value="' + (etat.lmin || "") + '"><input type="number" id="f-lmax" min="0" max="30" placeholder="max" value="' + (etat.lmax || "") + '"></div></div>' +
+    '<div class="champ"><span class="lab">Signification</span><div class="seg" id="f-sens"><button data-v="0" class="' + (!etat.avecSens ? "on" : "") + '">Tous les prénoms</button><button data-v="1" class="' + (etat.avecSens ? "on" : "") + '">Avec origine expliquée</button></div></div>' +
+    '<div class="btns grow"><button class="btn" data-act="filtres-raz">Réinitialiser</button><button class="btn pri" data-act="filtres-ok">Appliquer</button></div>' +
+  '</div></div>';
+  const unique = (id, attr) => $(id).addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; $(id).querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); });
+  unique("#f-orig"); unique("#f-rel"); unique("#f-pop"); unique("#f-sens");
+}
+function appliquerFiltres(){
+  etat.orig = ($("#f-orig .on") || {dataset:{o:""}}).dataset.o;
+  etat.rel = ($("#f-rel .on") || {dataset:{r:""}}).dataset.r;
+  etat.minPop = +($("#f-pop .on") || {dataset:{v:0}}).dataset.v;
+  etat.lmin = Math.max(0, +$("#f-lmin").value || 0);
+  etat.lmax = Math.max(0, +$("#f-lmax").value || 0);
+  etat.avecSens = ($("#f-sens .on") || {dataset:{v:"0"}}).dataset.v === "1";
+  $("#modal").innerHTML = "";
+  apresFiltres();
+}
+function apresFiltres(){
+  rafraichir(true);
+  file = []; _pool = null;
+  if(etat.vue === "dec") vueDecouvrir();
+}
+
+/* ============================================================
+   Réglages
+   ============================================================ */
+function vuePlus(){
+  const avecEty = D ? D.n.reduce((a, r) => a + (r[5] !== -1 || (r[7] && r[7].e) ? 1 : 0), 0) : 0;
+  $("#v-plus").innerHTML = '<section class="page-h" style="text-align:center"><img class="logo-grand" src="icons/logo.png" alt="babyName">' +
+    '<div class="compte" style="justify-content:center;gap:14px;margin-top:14px;font-size:13px"><span><b>' + fmtN(N) + '</b> prénoms</span><span><b>' + fmtN(avecEty) + '</b> avec origine expliquée</span></div></section>' +
+    '<div class="bloc"><div class="bloc-h">Notre famille</div><div class="bloc-b">' +
+      '<div class="lig" style="display:block"><div class="l">Nom de famille<div class="d">Chaque prénom s\'affiche en entier, avec ses initiales. Reste sur cet appareil.</div></div>' +
+      '<input type="text" id="nom-fam" style="margin-top:10px" placeholder="Ex. Martin" value="' + esc(nomFamille) + '" autocomplete="family-name"></div>' +
+    '</div></div>' +
+    '<div class="bloc"><div class="bloc-h">Affichage</div><div class="bloc-b">' +
+      '<div class="lig"><div class="l">Thème<div class="d">Automatique suit le réglage de l\'appareil.</div></div><div class="seg" id="seg-theme">' +
+        [["auto","Auto"],["clair","Clair"],["sombre","Sombre"]].map(x => '<button data-v="' + x[0] + '" class="' + (theme === x[0] ? "on" : "") + '">' + x[1] + '</button>').join("") + '</div></div>' +
+    '</div></div>' +
+    '<div class="bloc"><div class="bloc-h">Ma liste et Découvrir</div><div class="bloc-b">' +
+      '<div class="lig"><div class="l">' + gouts.filter(g => g.l === 2).length + ' coups de cœur · ' + gouts.filter(g => g.l === 1).length + ' j\'aime<div class="d">Enregistrés sur cet appareil uniquement.</div></div><button class="btn" data-act="copier-favs">Copier</button></div>' +
+      '<div class="lig"><div class="l">Mode duo<div class="d">' + (partenaire ? "Liste de " + esc(partenaire.nom || "ton ou ta partenaire") + " reçue (" + partenaire.g.length + " prénoms)." : "Partage tes goûts par lien et découvrez vos prénoms en commun.") + '</div></div><button class="btn" data-act="duo">💞 Partager</button></div>' +
+      '<div class="lig"><div class="l">Prénoms passés<div class="d">' + fmtN(vus.size) + ' cartes écartées ne reviennent plus.</div></div><button class="btn" data-act="vider-vus"' + (vus.size ? "" : " disabled") + '>Remettre</button></div>' +
+      '<div class="lig"><div class="l">Tout effacer<div class="d">Une annulation reste possible quelques secondes.</div></div><button class="btn dang" data-act="vider-favs"' + (gouts.length ? "" : " disabled") + '>Effacer</button></div>' +
+    '</div></div>' +
+    '<div class="bloc"><div class="bloc-h">Installer l\'application</div><div class="bloc-b" style="font-size:13px;color:var(--gris);line-height:1.6">Sur iPhone : bouton Partager puis « Sur l\'écran d\'accueil ». Sur Android : menu ⋮ puis « Installer l\'application ». Elle s\'ouvre alors en plein écran, avec le logo, et fonctionne hors ligne.</div></div>' +
+    '<div class="bloc"><div class="bloc-h">Sources</div><div class="bloc-b" style="font-size:13px;color:var(--gris);line-height:1.6">' +
+      '<b style="color:var(--texte)">France</b> — INSEE, fichier des prénoms, naissances de 1900 à ' + D.annee + '.<br>' +
+      '<b style="color:var(--texte)">États-Unis</b> — Social Security Administration, 1880 à ' + D.usMax + '.<br>' +
+      '<b style="color:var(--texte)">Monde</b> — firstname-database (J. Michael / M. Winkelmann), fréquence dans 55 pays.<br>' +
+      '<b style="color:var(--texte)">Étymologies</b> — ' + fmtN(D.rac.length) + ' fiches rédigées, complétées par le Wiktionnaire et le Wiktionary (CC BY-SA) et une analyse automatique de la formation des prénoms.<br>' +
+      '<b style="color:var(--texte)">Drapeaux</b> — flagcdn.com.' +
+    '</div></div>';
+  $("#seg-theme").addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    theme = b.dataset.v; store.set("theme", theme); appliquerTheme(); vuePlus();
+  });
+  $("#nom-fam").addEventListener("change", e => {
+    nomFamille = e.target.value.trim().replace(/\s+/g, " ");
+    store.set("nomFamille", nomFamille);
+    toast(nomFamille ? "Les prénoms s'affichent avec " + nomFamille : "Nom de famille retiré");
+    _fenDeb = -1;
+  });
+}
+
+/* ============================================================
+   Onglets et navigation
+   ============================================================ */
+const TABS = [
+  ["noms", "Prénoms", '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>'],
+  ["dec", "Découvrir", '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="6" y="3.5" width="12" height="16" rx="3" transform="rotate(8 12 11.5)"/><path d="M4.6 7.2 3.4 16a3 3 0 0 0 2.5 3.4l1.6.2"/></svg>'],
+  ["favs", "Ma liste", ICO_COEUR.replace(/19/g, "21")],
+  ["plus", "Réglages", '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>'],
+];
+function majTabs(){
+  const nb = gouts.length;
+  $("#tabs").innerHTML = TABS.map(t => '<button class="tab' + (etat.vue === t[0] ? " on" : "") + '" data-vue="' + t[0] + '">' + t[2] + t[1] +
+    (t[0] === "favs" && nb ? '<span class="pas">' + nb + '</span>' : "") + '</button>').join("");
+}
+const defil = { noms:0, dec:0, favs:0, plus:0 };
+function allerVue(v){
+  if(!D) return;
+  if(v === etat.vue){ if(v === "noms") window.scrollTo({ top:0, behavior:"smooth" }); return; }
+  defil[etat.vue] = scrollY;
+  etat.vue = v;
+  ["noms", "dec", "favs", "plus"].forEach(x => $("#v-" + x).classList.toggle("hide", x !== v));
+  if(v === "favs") vueFavs();
+  if(v === "plus") vuePlus();
+  if(v === "dec") vueDecouvrir();
+  majTabs();
+  window.scrollTo(0, v === "dec" ? 0 : defil[v] || 0);
+  if(v === "noms"){ _fenDeb = -1; dessinerFenetre(); } else majRail();
+}
+
+function auHasard(){
+  if(!D) return;
+  for(let x = 0; x < 6000; x++){
+    const i = Math.floor(Math.random() * N);
+    if(dansMode(i, etat.mode) && POP[i] >= 500 && D.n[i][5] !== -1) return ouvrirFiche(i);
+  }
+}
+function ouvrirJournal(){
+  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl"><h3>Nouveautés</h3><div class="sous">babyName ' + VERSION + '</div>' +
+    JOURNAL.map(j => '<div style="border-top:1px solid var(--trait2);padding:12px 0"><div style="display:flex;gap:9px;align-items:baseline"><span class="mono" style="font-size:12.5px;font-weight:500">' + j.v + '</span><span class="mono" style="font-size:10.5px;color:var(--gris2)">' + j.d + '</span><span style="font-size:13px;color:var(--gris);margin-left:auto">' + esc(j.t) + '</span></div><ul style="margin:7px 0 0;padding-left:17px">' +
+      j.l.map(l => '<li style="font-size:13px;line-height:1.55;margin-bottom:3px;color:var(--gris)">' + esc(l) + '</li>').join("") + '</ul></div>').join("") +
+    '<div class="btns"><button class="btn wide" data-act="fermer-modal-btn">Fermer</button></div></div></div>';
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-act],[data-vue]");
+  if(!t) return;
+  if(t.dataset.vue){ allerVue(t.dataset.vue); return; }
+  const a = t.dataset.act;
+  if(a === "fermer-modal"){ if(e.target === t) $("#modal").innerHTML = ""; return; }
+  if(a === "fermer-modal-btn"){ $("#modal").innerHTML = ""; return; }
+  if(a === "theme"){
+    const sombre = document.documentElement.getAttribute("data-theme") === "sombre";
+    theme = sombre ? "clair" : "sombre"; store.set("theme", theme); appliquerTheme(); if(etat.vue === "plus") vuePlus(); return;
+  }
+  if(a === "journal") return ouvrirJournal();
+  if(a === "hasard") return auHasard();
+  if(a === "filtres") return ouvrirFiltres();
+  if(a === "filtres-ok") return appliquerFiltres();
+  if(a === "filtres-raz"){ etat.orig = ""; etat.rel = ""; etat.minPop = 0; etat.lmin = 0; etat.lmax = 0; etat.avecSens = false; $("#modal").innerHTML = ""; apresFiltres(); return; }
+  if(a === "retour") return history.back();
+  if(a === "niv"){ const nom = $("#fiche-btns").dataset.nom, l = +t.dataset.l; fixerNiveau(nom, niveau(nom) === l ? 0 : l); return; }
+  if(a === "niv-cycle"){ const i = parNom.get(t.dataset.nom); if(i !== undefined) cyclerNiveau(i); return; }
+  if(a === "partager-fiche"){
+    const i = +$("#sheet").dataset.i, inf = infos(i), nom = D.n[i][0];
+    partager(nom, nom + (nomFamille ? " " + nomFamille : "") + (inf.sens ? " — " + inf.sens : "") + (inf.orig ? " (" + inf.orig + ")" : ""), location.href.split("#")[0] + "#" + encodeURIComponent(nom));
+    return;
+  }
+  if(a === "partager-favs") return partager("Nos prénoms préférés", texteFavs());
+  if(a === "copier-favs") return gouts.length ? copier(texteFavs()) : toast("Ta liste est vide pour l'instant");
+  if(a === "duo") return ouvrirDuo();
+  if(a === "duo-envoyer"){
+    const p = $("#duo-p").value.trim(); store.set("monPrenom", p);
+    $("#modal").innerHTML = "";
+    partager("Nos prénoms — mode duo", (p ? p + " t'envoie" : "Voici") + " ses prénoms préférés sur babyName. Ouvre le lien pour voir vos matchs 💞", lienDuo(p));
+    return;
+  }
+  if(a === "duo-oublier"){ partenaire = null; store.set("partenaire", null); vueFavs(); return; }
+  if(a === "vider-vus"){ vus = new Set(); store.set("vus", []); file = []; toast("Les prénoms passés reviennent dans Découvrir"); vuePlus(); return; }
+  if(a === "vider-favs"){
+    const avant = gouts.slice(); gouts = []; store.set("gouts", gouts); apresGouts(); vuePlus();
+    toast("Liste effacée", { label:"Annuler", fn(){ gouts = avant; store.set("gouts", gouts); apresGouts(); vuePlus(); } });
+    return;
+  }
+  if(a === "dec-oui") return choisirCarte(1);
+  if(a === "dec-non") return choisirCarte(0);
+  if(a === "dec-cdc") return choisirCarte(2);
+  if(a === "dec-annuler") return annulerCarte();
+  if(a === "dec-info"){ if(file.length) ouvrirFiche(file[0]); return; }
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape"){
+    if($("#modal").innerHTML) $("#modal").innerHTML = "";
+    else if($("#sheet").innerHTML) history.back();
+    return;
+  }
+  if(etat.vue === "dec" && !$("#sheet").innerHTML && !$("#modal").innerHTML && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
+    if(e.key === "ArrowRight"){ e.preventDefault(); choisirCarte(1); }
+    if(e.key === "ArrowLeft"){ e.preventDefault(); choisirCarte(0); }
+    if(e.key === "ArrowUp"){ e.preventDefault(); choisirCarte(2); }
+    if(e.key === "Backspace"){ e.preventDefault(); annulerCarte(); }
+  }
+});
+
+window.addEventListener("popstate", e => {
+  const s = e.state;
+  if(s && s.fiche !== undefined && D) rendreFiche(s.fiche);
+  else fermerFiche();
+});
+let _raf = 0;
+window.addEventListener("scroll", () => {
+  if(_raf) return;
+  _raf = requestAnimationFrame(() => { _raf = 0; dessinerFenetre(); });
+}, { passive:true });
+window.addEventListener("resize", () => { majOutilsTop(); placerRail(); _fenDeb = -1; dessinerFenetre(); });
+
+function demarrer(){
+  if("scrollRestoration" in history) history.scrollRestoration = "manual";
+  vueNoms();
+  majOutilsTop();
+  initRail();
+  majTabs();
+  const h = location.hash.slice(1);
+  history.replaceState({}, "", location.pathname + location.search);
+  if(h.startsWith("duo=")) importerDuo(h.slice(4));
+  else { const n = decodeURIComponent(h); if(n && parNom.has(n)) ouvrirFiche(parNom.get(n)); }
+}
+
+$("#ver-chip").textContent = "v" + VERSION;
+majTabs();
+chargerDonnees();
+if("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
