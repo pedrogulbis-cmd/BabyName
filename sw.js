@@ -3,7 +3,7 @@
    rend l'app installable dès la première visite ; les données (13 Mo) sont
    mises en cache au passage, la première fois qu'elles sont chargées.
    Incrémenter CACHE à chaque mise en ligne d'une nouvelle version. */
-const CACHE = "babyname-5";
+const CACHE = "babyname-6";
 const BASE = ["./", "./index.html", 
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/logo-marque.png", "./icons/favicon-32.png"];
 
@@ -21,7 +21,7 @@ self.addEventListener("fetch", e => {
   if(req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
   if(req.mode === "navigate"){
     // la page : le réseau d'abord, pour recevoir les mises à jour ; le cache hors ligne
-    e.respondWith(fetch(req).then(r => {
+    e.respondWith(fetch(req, { cache:"no-cache" }).then(r => {
       const c = r.clone(); caches.open(CACHE).then(x => x.put("./index.html", c)); return r;
     }).catch(() => caches.match("./index.html").then(r => r || caches.match("./"))));
     return;
