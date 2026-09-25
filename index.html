@@ -86,6 +86,7 @@ header.top{position:sticky;top:0;z-index:30;background:var(--voile);
 .top-sp{flex:1}
 .ver{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--gris);
   border:1px solid var(--trait);border-radius:7px;padding:3px 7px;background:var(--fond2)}
+@media(max-width:420px){.ver{display:none}}
 .iconbtn{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;
   border:1px solid var(--trait);color:var(--texte);background:var(--carte)}
 .iconbtn:active{background:var(--fond2)}
@@ -414,6 +415,9 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
     <div class="brand"><img src="icons/logo-marque.png" alt="" width="34" height="28"><b><em>baby</em><span>Name</span></b></div>
     <button class="ver" id="ver-chip" data-act="journal" title="Voir les nouveautés"></button>
     <div class="top-sp"></div>
+    <button class="btn pri hide" id="btn-installer" data-act="installer" style="padding:8px 12px;font-size:13px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg>Installer
+    </button>
     <button class="iconbtn" data-act="hasard" aria-label="Un prénom au hasard" title="Un prénom au hasard">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/></svg>
     </button>
@@ -466,6 +470,71 @@ const JOURNAL = [
 ];
 
 const $ = s => document.querySelector(s);
+
+/* ---------------- installation comme application ----------------
+   Chrome (Android, ordinateur) n'installe une vraie application que si la
+   page a un manifeste valide et un service worker actif. Le service worker
+   est donc enregistré tout de suite, et l'invitation d'installation de
+   Chrome est gardée pour le bouton « Installer ». */
+let invitation = null;
+const estInstallee = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+const estIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")){
+  navigator.serviceWorker.register("sw.js").catch(e => console.warn("service worker", e));
+}
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  invitation = e;
+  majInstall();
+});
+window.addEventListener("appinstalled", () => {
+  invitation = null;
+  majInstall();
+  toast("babyName est installée sur ton appareil");
+});
+function majInstall(){
+  const b = document.getElementById("btn-installer");
+  if(b) b.classList.toggle("hide", !invitation || estInstallee());
+  const bl = document.getElementById("bloc-install");
+  if(bl) bl.innerHTML = blocInstall();
+}
+async function installer(){
+  if(invitation){
+    invitation.prompt();
+    const r = await invitation.userChoice.catch(() => null);
+    if(r && r.outcome === "accepted") invitation = null;
+    majInstall();
+    return;
+  }
+  allerVue("plus");
+  setTimeout(() => { const b = document.getElementById("bloc-install"); if(b) b.scrollIntoView({ behavior:"smooth", block:"center" }); }, 60);
+}
+function blocInstall(){
+  const txt = 'style="font-size:13px;color:var(--gris);line-height:1.6"';
+  if(estInstallee()) return '<div ' + txt + '>✓ Tu utilises babyName en application.</div>';
+  if(invitation) return '<div class="lig"><div class="l">Ajouter babyName à l\'écran d\'accueil<div class="d">Elle s\'ouvrira en plein écran, avec son icône, et fonctionnera hors ligne.</div></div><button class="btn pri" data-act="installer">Installer</button></div>';
+  if(estIOS) return '<div ' + txt + '>Dans <b style="color:var(--texte)">Safari</b> : touche le bouton Partager en bas, puis « <b style="color:var(--texte)">Sur l\'écran d\'accueil</b> ». Sur iPhone, seul Safari sait installer une application web.</div>';
+  return '<div ' + txt + '>Dans Chrome : menu <b style="color:var(--texte)">⋮</b> puis « <b style="color:var(--texte)">Installer l\'application</b> ». Si seul « Ajouter à l\'écran d\'accueil » apparaît, recharge la page une fois : l\'installation devient possible dès que le mode hors ligne est prêt.</div>' +
+    '<div class="btns"><button class="btn" data-act="diag-install">Vérifier l\'installation</button></div><div id="diag" class="note hide"></div>';
+}
+async function diagnostic(){
+  const d = document.getElementById("diag"); if(!d) return;
+  const l = [];
+  l.push((location.protocol === "https:" ? "✓" : "✗") + " page en HTTPS");
+  try { const r = await fetch("manifest.webmanifest", { cache:"no-store" }); const m = await r.json(); l.push("✓ manifeste lu (" + (m.icons || []).length + " icônes)"); }
+  catch(e){ l.push("✗ manifest.webmanifest introuvable ou illisible"); }
+  for(const ic of ["icons/icon-192.png", "icons/icon-512.png", "sw.js"]){
+    try { const r = await fetch(ic, { cache:"no-store" }); l.push((r.ok ? "✓ " : "✗ ") + ic); } catch(e){ l.push("✗ " + ic); }
+  }
+  if("serviceWorker" in navigator){
+    const reg = await navigator.serviceWorker.getRegistration();
+    l.push((reg && reg.active ? "✓" : "✗") + " service worker " + (reg ? (reg.active ? "actif" : "en cours d'installation") : "absent"));
+    l.push((navigator.serviceWorker.controller ? "✓ page contrôlée" : "… page pas encore contrôlée : recharge la page"));
+  } else l.push("✗ service worker non pris en charge par ce navigateur");
+  l.push(invitation ? "✓ Chrome propose l'installation" : "… Chrome n'a pas encore proposé l'installation");
+  d.innerHTML = l.map(esc).join("<br>");
+  d.classList.remove("hide");
+}
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const fmtN = n => Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " ");
@@ -1411,7 +1480,7 @@ function choisirCarte(l){
   if(historique.length > 50) historique.shift();
   if(l) fixerNiveau(nom, l, true); else { vus.add(nom); store.set("vus", [...vus].slice(-20000)); }
   if(l){ const e = document.createElement("div"); e.className = "envol"; e.textContent = l === 2 ? "★" : "♥"; e.style.color = l === 2 ? "var(--or)" : "var(--rose)"; e.style.top = "45%"; document.body.appendChild(e); setTimeout(() => e.remove(), 950); }
-  if(navigator.vibrate) try { navigator.vibrate(l === 2 ? [8, 40, 8] : 6); } catch(e){}
+  if(navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(l === 2 ? [8, 40, 8] : 6); } catch(e){}
   file.shift();
   if(l && etat.style === "gouts") file = file.slice(0, 2);   // les goûts ont changé : on recalcule la suite
   if(file.length < 5) remplirFile();
@@ -1751,7 +1820,7 @@ function vuePlus(){
       '<div class="lig"><div class="l">Prénoms passés<div class="d">' + fmtN(vus.size) + ' cartes écartées ne reviennent plus.</div></div><button class="btn" data-act="vider-vus"' + (vus.size ? "" : " disabled") + '>Remettre</button></div>' +
       '<div class="lig"><div class="l">Tout effacer<div class="d">Une annulation reste possible quelques secondes.</div></div><button class="btn dang" data-act="vider-favs"' + (gouts.length ? "" : " disabled") + '>Effacer</button></div>' +
     '</div></div>' +
-    '<div class="bloc"><div class="bloc-h">Installer l\'application</div><div class="bloc-b" style="font-size:13px;color:var(--gris);line-height:1.6">Sur iPhone : bouton Partager puis « Sur l\'écran d\'accueil ». Sur Android : menu ⋮ puis « Installer l\'application ». Elle s\'ouvre alors en plein écran, avec le logo, et fonctionne hors ligne.</div></div>' +
+    '<div class="bloc"><div class="bloc-h">Installer l\'application</div><div class="bloc-b" id="bloc-install">' + blocInstall() + '</div></div>' +
     '<div class="bloc"><div class="bloc-h">Sources</div><div class="bloc-b" style="font-size:13px;color:var(--gris);line-height:1.6">' +
       '<b style="color:var(--texte)">France</b> — INSEE, fichier des prénoms, naissances de 1900 à ' + D.annee + '.<br>' +
       '<b style="color:var(--texte)">États-Unis</b> — Social Security Administration, 1880 à ' + D.usMax + '.<br>' +
@@ -1826,6 +1895,8 @@ document.addEventListener("click", e => {
     theme = sombre ? "clair" : "sombre"; store.set("theme", theme); appliquerTheme(); if(etat.vue === "plus") vuePlus(); return;
   }
   if(a === "journal") return ouvrirJournal();
+  if(a === "installer") return installer();
+  if(a === "diag-install") return diagnostic();
   if(a === "hasard") return auHasard();
   if(a === "filtres") return ouvrirFiltres();
   if(a === "filtres-ok") return appliquerFiltres();
@@ -1901,7 +1972,6 @@ function demarrer(){
 $("#ver-chip").textContent = "v" + VERSION;
 majTabs();
 chargerDonnees();
-if("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
 </html>

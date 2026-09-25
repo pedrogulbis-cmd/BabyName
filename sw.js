@@ -1,12 +1,15 @@
-/* babyName — mise en cache pour l'installation et l'usage hors ligne.
+/* babyName — service worker.
+   Il s'installe tout de suite (quelques petits fichiers seulement), ce qui
+   rend l'app installable dès la première visite ; les données (13 Mo) sont
+   mises en cache au passage, la première fois qu'elles sont chargées.
    Incrémenter CACHE à chaque mise en ligne d'une nouvelle version. */
-const CACHE = "babyname-2";
-const BASE = ["./", "./index.html", "./manifest.webmanifest", "./data/names.js?v=2",
-  "./icons/logo.png", "./icons/logo-marque.png", "./icons/favicon-32.png", "./icons/icon-192.png"];
+const CACHE = "babyname-3";
+const BASE = ["./", "./index.html", "./manifest.webmanifest",
+  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/logo-marque.png", "./icons/favicon-32.png"];
 
 self.addEventListener("install", e => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(BASE)));
+  e.waitUntil(caches.open(CACHE).then(c => Promise.all(BASE.map(u => c.add(u).catch(() => {})))));
 });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
@@ -16,13 +19,14 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const req = e.request;
   if(req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
-  // la page : le réseau d'abord, pour recevoir les mises à jour
   if(req.mode === "navigate"){
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put("./index.html", c)); return r; })
-      .catch(() => caches.match("./index.html")));
+    // la page : le réseau d'abord, pour recevoir les mises à jour ; le cache hors ligne
+    e.respondWith(fetch(req).then(r => {
+      const c = r.clone(); caches.open(CACHE).then(x => x.put("./index.html", c)); return r;
+    }).catch(() => caches.match("./index.html").then(r => r || caches.match("./"))));
     return;
   }
-  // le reste (données, drapeaux, icônes) : le cache d'abord
+  // données, drapeaux, icônes : le cache d'abord, rempli au fil de l'eau
   e.respondWith(caches.match(req).then(r => r || fetch(req).then(res => {
     if(res.ok){ const c = res.clone(); caches.open(CACHE).then(x => x.put(req, c)); }
     return res;
