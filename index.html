@@ -10,6 +10,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="Plus de 150 000 prénoms de bébé, fille et garçon : origine, signification, étymologie, tradition, fête et popularité.">
 <title>Baby Name</title>
+<!-- aperçu quand le lien est partagé (Messenger, WhatsApp, SMS…) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Baby Name">
+<meta property="og:title" content="Baby Name — prénoms de bébé">
+<meta property="og:description" content="Plus de 150 000 prénoms de bébé : origine, signification, tradition, fête et popularité. Swipe, coups de cœur et mode duo.">
+<meta property="og:image" content="icons/partage.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo Baby Name : un nuage endormi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="icons/partage.png">
+<link rel="image_src" href="icons/partage.png">
 <script>
 /* Manifeste construit ici même, comme dans CashFlow : adresses complètes
    calculées d'après l'emplacement réel de la page (GitHub Pages, sous-dossier…).
@@ -364,6 +377,21 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 .cdc .cs{font-size:12px;color:var(--gris);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:31px;position:relative}
 .cdc .ce{position:absolute;top:10px;right:10px;color:var(--or)}
 .cdc .cf{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;color:var(--gris2);position:relative}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:end;gap:8px;margin:4px 0 8px}
+.marche{text-align:center;cursor:pointer;min-width:0}
+.marche .med{font-size:24px;line-height:1}
+.marche.m1 .med{font-size:30px}
+.marche .pn{font-size:18px;font-weight:600;letter-spacing:-.03em;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.marche.m1 .pn{font-size:22px}
+.marche .ps{font-size:11px;color:var(--gris);margin-top:2px;min-height:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.marche .ps .drap{width:14px;height:10px}
+.marche.vide .pn{font-size:14px;font-weight:500;color:var(--gris2)}
+.marche .socle{margin-top:8px;border-radius:12px 12px 4px 4px;display:grid;place-items:center;font-size:22px;font-weight:700;color:#fff;box-shadow:var(--ombre)}
+.marche.m1 .socle{height:88px;background:linear-gradient(180deg,#F5C84C,#E0A21B)}
+.marche.m2 .socle{height:64px;background:linear-gradient(180deg,#D5D8DE,#A9AEB8)}
+.marche.m3 .socle{height:48px;background:linear-gradient(180deg,#E3A57A,#C07A4A)}
+.marche.vide .socle{opacity:.45}
+.marche:active .socle{transform:translateY(2px)}
 .match{border-color:color-mix(in srgb,var(--rose) 40%,transparent)}
 .match::before{background:linear-gradient(140deg,color-mix(in srgb,var(--rose) 16%,transparent),color-mix(in srgb,var(--lavande) 14%,transparent) 70%)}
 
@@ -852,6 +880,7 @@ function fixerNiveau(nom, l, silencieux){
   gouts = gouts.filter(g => g.n !== nom);
   if(l) gouts.unshift({ n:nom, t:Date.now(), l });
   store.set("gouts", gouts);
+  if(!l && podium.includes(nom)){ podium = podium.map(x => x === nom ? null : x); store.set("podium", podium); }
   if(!silencieux){
     const msg = l === 2 ? "★ " + nom + " en coup de cœur" : l === 1 ? "♥ Tu aimes " + nom : nom + " retiré de ta liste";
     toast(msg, l ? null : { label:"Annuler", fn(){ gouts = avant; store.set("gouts", gouts); apresGouts(); } });
@@ -1249,7 +1278,8 @@ function vueFavs(){
   const v = $("#v-favs");
   const ens = gouts.map(g => ({...g, i: parNom.get(g.n)})).filter(g => g.i !== undefined)
     .filter(g => etat.favGenre === "T" || (etat.favGenre === "F" ? GP[g.i] >= 35 : GP[g.i] <= 65));
-  const cdc = ens.filter(g => g.l === 2), aime = ens.filter(g => g.l === 1);
+  const alpha = (a, b) => K[a.i] < K[b.i] ? -1 : K[a.i] > K[b.i] ? 1 : 0;
+  const cdc = ens.filter(g => g.l === 2).sort(alpha), aime = ens.filter(g => g.l === 1).sort(alpha);
   const pSet = partenaire ? new Map(partenaire.g.map(x => [x.n, x.l])) : null;
   const matchs = pSet ? ens.filter(g => pSet.has(g.n)) : [];
   let h = '<section class="page-h">' +
@@ -1263,6 +1293,7 @@ function vueFavs(){
       '<div class="btns grow"><button class="btn pri" data-vue="dec">Découvrir des prénoms</button><button class="btn" data-vue="noms">Parcourir la liste</button></div>';
     v.innerHTML = h; return;
   }
+  h += podiumHTML();
   h += '<div class="sect"><div class="chips" id="fav-f">' +
     [["T","Tous"],["F","Filles"],["M","Garçons"]].map(x => '<button class="chip' + (etat.favGenre === x[0] ? " on" : "") + '" data-g="' + x[0] + '">' + x[1] + '</button>').join("") + '</div></div>';
   if(partenaire){
@@ -1277,6 +1308,7 @@ function vueFavs(){
   h += '<div class="btns grow"><button class="btn" data-act="partager-favs">' + ICO_PART + ' Partager ma liste</button><button class="btn pri" data-act="duo">💞 Mode duo</button></div>';
   v.innerHTML = h;
   v.querySelectorAll(".cdc").forEach(c => c.addEventListener("click", () => ouvrirFiche(+c.dataset.i)));
+  v.querySelectorAll(".marche").forEach(c => c.addEventListener("click", () => choisirPodium(+c.dataset.p)));
   const fl = $("#fav-liste");
   if(fl) fl.addEventListener("click", e => {
     const row = e.target.closest(".nrow"); if(!row) return;
@@ -1286,10 +1318,55 @@ function vueFavs(){
   });
   $("#fav-f").addEventListener("click", e => { const b = e.target.closest("button"); if(b){ etat.favGenre = b.dataset.g; vueFavs(); } });
 }
+/* ---------------- podium : mes 3 préférés ---------------- */
+let podium = store.get("podium", [null, null, null]);     // 1er, 2e, 3e
+const MEDAILLES = ["🥇", "🥈", "🥉"];
+function podiumHTML(){
+  // ordre d'affichage : 2e, 1er, 3e
+  const marche = p => {
+    const nom = podium[p], i = nom != null ? parNom.get(nom) : undefined;
+    const inf = i !== undefined ? infos(i) : null;
+    return '<div class="marche m' + (p + 1) + (i === undefined ? " vide" : "") + '" data-p="' + p + '" role="button" tabindex="0" aria-label="' + (p + 1) + (p ? "e" : "er") + ' place">' +
+      '<div class="med">' + MEDAILLES[p] + '</div>' +
+      '<div class="pn">' + (i !== undefined ? esc(nom) : "Choisir") + '</div>' +
+      '<div class="ps">' + (inf ? drapeau(inf.orig) + ' ' + esc(inf.sens && inf.sens !== "—" ? inf.sens : famille(inf.orig)) : "&nbsp;") + '</div>' +
+      '<div class="socle">' + (p + 1) + '</div></div>';
+  };
+  return '<div class="sect"><h2>Mon podium</h2><span class="sp"></span><span class="cnt">touche une marche pour la changer</span></div>' +
+    '<div class="podium">' + marche(1) + marche(0) + marche(2) + '</div>';
+}
+function choisirPodium(p){
+  const cands = gouts.map(g => ({...g, i: parNom.get(g.n)})).filter(g => g.i !== undefined)
+    .sort((a, b) => (b.l - a.l) || (K[a.i] < K[b.i] ? -1 : 1));
+  const actuel = podium[p];
+  $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl" role="dialog" aria-label="Podium">' +
+    '<h3>' + MEDAILLES[p] + ' ' + (p + 1) + (p ? "e" : "re") + ' place</h3><div class="sous">Choisis parmi tes coups de cœur et tes j\'aime.</div>' +
+    (cands.length > 8 ? '<input type="text" class="cherche" id="pod-q" placeholder="Chercher dans ma liste" autocomplete="off">' : "") +
+    (cands.length ? '<div class="choix defile" id="pod-l">' + cands.map(g => '<button class="opt' + (g.n === actuel ? " on" : "") + '" data-n="' + esc(g.n) + '">' +
+        '<b style="color:var(' + (g.l === 2 ? "--or" : "--rose") + ');font-weight:500">' + (g.l === 2 ? "★" : "♥") + '</b><span>' + esc(g.n) + '</span>' +
+        (podium.includes(g.n) && g.n !== actuel ? '<small>' + MEDAILLES[podium.indexOf(g.n)] + '</small>' : "") + '</button>').join("") + '</div>'
+      : '<div class="note">Ta liste est vide : aime d\'abord quelques prénoms.</div>') +
+    '<div class="btns grow">' + (actuel ? '<button class="btn dang" data-act="pod-retirer" data-p="' + p + '">Retirer</button>' : "") + '<button class="btn" data-act="fermer-modal-btn">Fermer</button></div>' +
+  '</div></div>';
+  const l = $("#pod-l");
+  if(l) l.addEventListener("click", e => {
+    const b = e.target.closest("[data-n]"); if(!b) return;
+    const nom = b.dataset.n, ancien = podium.indexOf(nom);
+    if(ancien >= 0 && ancien !== p) podium[ancien] = podium[p];   // échange de places
+    podium[p] = nom;
+    store.set("podium", podium);
+    $("#modal").innerHTML = "";
+    vueFavs();
+    toast(MEDAILLES[p] + " " + nom);
+  });
+  const q = $("#pod-q");
+  if(q) q.addEventListener("input", () => { const t = norm(q.value.trim()); l.querySelectorAll(".opt").forEach(b => b.style.display = !t || norm(b.dataset.n).includes(t) ? "" : "none"); });
+}
 function texteFavs(){
   const c = gouts.filter(g => g.l === 2).map(g => "★ " + g.n + (nomFamille ? " " + nomFamille : ""));
   const a = gouts.filter(g => g.l === 1).map(g => "♥ " + g.n + (nomFamille ? " " + nomFamille : ""));
-  return "Nos prénoms préférés (Baby Name)\n" + (c.length ? "\nCoups de cœur :\n" + c.join("\n") + "\n" : "") + (a.length ? "\nJ'aime :\n" + a.join("\n") : "");
+  const pod = podium.map((n, k) => n ? MEDAILLES[k] + " " + n + (nomFamille ? " " + nomFamille : "") : null).filter(Boolean);
+  return "Nos prénoms préférés (Baby Name)\n" + (pod.length ? "\nPodium :\n" + pod.join("\n") + "\n" : "") + (c.length ? "\nCoups de cœur :\n" + c.join("\n") + "\n" : "") + (a.length ? "\nJ'aime :\n" + a.join("\n") : "");
 }
 async function partager(titre, texte, url){
   if(navigator.share){ try { await navigator.share(url ? { title:titre, text:texte, url } : { title:titre, text:texte }); return; } catch(e){ if(e.name === "AbortError") return; } }
@@ -2053,6 +2130,7 @@ document.addEventListener("click", e => {
     partager("Nos prénoms — mode duo", (p ? p + " t'envoie" : "Voici") + " ses prénoms préférés sur Baby Name. Ouvre le lien pour voir vos matchs 💞", lienDuo(p));
     return;
   }
+  if(a === "pod-retirer"){ podium[+t.dataset.p] = null; store.set("podium", podium); $("#modal").innerHTML = ""; vueFavs(); return; }
   if(a === "duo-oublier"){ partenaire = null; store.set("partenaire", null); vueFavs(); return; }
   if(a === "vider-vus"){ vus = new Set(); store.set("vus", []); file = []; toast("Les prénoms passés reviennent dans Découvrir"); vuePlus(); return; }
   if(a === "vider-favs"){
