@@ -404,9 +404,9 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 @media(min-width:560px){.dec-h .chips{justify-content:center}}
 .sep{flex:0 0 1px;background:var(--trait);margin:4px 2px}
 .dec-opts{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}
-.pile{position:relative;height:min(460px,calc(100vh - 330px - env(safe-area-inset-bottom)));min-height:330px;margin:18px auto 0;max-width:400px;touch-action:none;user-select:none;-webkit-user-select:none}
-.carte{position:absolute;inset:0;border-radius:28px;background:var(--carte);border:1px solid var(--trait);box-shadow:var(--ombre2);
-  padding:22px 22px 18px;display:flex;flex-direction:column;overflow:hidden;will-change:transform;
+.pile{position:relative;height:300px;margin:16px auto 0;max-width:400px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.carte{position:absolute;top:0;left:0;right:0;border-radius:28px;background:var(--carte);border:1px solid var(--trait);box-shadow:var(--ombre2);
+  padding:18px 20px 14px;display:flex;flex-direction:column;overflow:hidden;will-change:transform;
   transition:transform .35s cubic-bezier(.22,.9,.3,1),opacity .3s}
 .carte.drag{transition:none}
 .carte::before{content:"";position:absolute;inset:0;pointer-events:none;
@@ -416,26 +416,27 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 .c-haut{display:flex;align-items:center;gap:8px}
 .c-haut .sp{flex:1}
 .c-rang{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--gris)}
-.c-nom{font-size:clamp(42px,13vw,60px);font-weight:600;letter-spacing:-.055em;line-height:1;margin-top:auto;word-break:break-word}
+.c-nom{font-size:clamp(40px,12vw,54px);font-weight:600;letter-spacing:-.055em;line-height:1;margin-top:14px;word-break:break-word}
 .c-complet{font-size:14px;color:var(--gris);margin-top:6px}
-.c-sens{font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.3;margin-top:12px}
+.c-sens{font-size:17px;font-weight:500;letter-spacing:-.02em;line-height:1.3;margin-top:10px}
 .c-sens q{quotes:"« " " »"}
 .c-sens q::before,.c-sens q::after{color:var(--cc)}
-.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.c-spark{margin-top:14px;height:44px}
-.c-spark svg{width:100%;height:44px;display:block}
-.c-pq{margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--gris);display:flex;gap:6px;align-items:flex-start}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.c-spark{margin-top:12px;height:36px}
+.c-spark svg{width:100%;height:36px;display:block}
+.c-pq{margin-top:auto;padding-top:10px;font-size:12.5px;color:var(--gris);display:flex;gap:6px;align-items:flex-start}
 .c-pq b{color:var(--texte);font-weight:500}
 .c-pq svg{flex:0 0 auto;margin-top:2px;color:var(--cc)}
 .carte.dos1{transform:translateY(12px) scale(.955);opacity:.9}
 .carte.dos2{transform:translateY(24px) scale(.91);opacity:.6}
 .carte.dos1,.carte.dos2{pointer-events:none}
+.carte.dos1 > *,.carte.dos2 > *{visibility:hidden}
 .tampon{position:absolute;top:26px;padding:6px 12px;border-radius:10px;border:3px solid;font-weight:700;font-size:22px;letter-spacing:.02em;
   opacity:0;pointer-events:none;text-transform:uppercase;z-index:3}
 .tampon.oui{left:18px;color:var(--rose);border-color:var(--rose);transform:rotate(-14deg)}
 .tampon.non{right:18px;color:var(--gris);border-color:var(--gris);transform:rotate(14deg)}
 .tampon.cdc{left:50%;top:auto;bottom:90px;transform:translateX(-50%) rotate(-6deg);color:var(--or);border-color:var(--or);white-space:nowrap}
-.actions{display:flex;justify-content:center;align-items:center;gap:14px;margin:16px 0 4px}
+.actions{display:flex;justify-content:center;align-items:center;gap:14px;margin:12px 0 4px}
 .rond{border-radius:50%;display:grid;place-items:center;background:var(--carte);border:1px solid var(--trait);box-shadow:var(--ombre);transition:transform .12s}
 .rond:active{transform:scale(.9)}
 .rond.p{width:46px;height:46px;color:var(--gris)}
@@ -450,6 +451,8 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transpa
 .dec-stats b{color:var(--texte);font-weight:500}
 .profil{margin-top:22px}
 .barres{display:grid;gap:8px}
+.profil-sous{font-size:11.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px}
+.barre-l{grid-template-columns:118px 1fr 36px}
 .barre-l{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:10px;font-size:12.5px}
 .barre-l span:first-child{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
 .barre-l .b{height:7px;border-radius:4px;background:var(--trait2);overflow:hidden}
@@ -634,6 +637,7 @@ let partenaire = store.get("partenaire", null);   // { nom, g:[{n,l}] }
 let nomFamille = store.get("nomFamille", "");
 let theme = store.get("theme", "auto");
 let fusion = store.get("fusion", true);      // regrouper les orthographes proches
+let sansComposes = store.get("sansComposes", false);   // masquer Marie-Anne, Jean Baptiste…
 
 /* ---------------- thème ---------------- */
 const mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
@@ -728,7 +732,7 @@ const TRAD = Object.fromEntries(TRADS.map(t => [t[0], t]));
    Données
    ============================================================ */
 let D, N = 0;
-let K, LET, GP, POP, TEND, RELB, ORIG, LONG;
+let K, LET, GP, POP, TEND, RELB, ORIG, LONG, COMP;
 let parNom = new Map(), parCle = new Map();
 let sensCle = [];
 let ORIGINES = [];
@@ -752,7 +756,7 @@ function initDonnees(){
   D = window.BN_DATA;
   const n = D.n; N = n.length;
   K = new Array(N); LET = new Uint8Array(N); GP = new Uint8Array(N); LONG = new Uint8Array(N);
-  POP = new Float64Array(N); TEND = new Float64Array(N); RELB = new Uint8Array(N);
+  POP = new Float64Array(N); TEND = new Float64Array(N); RELB = new Uint8Array(N); COMP = new Uint8Array(N);
   ORIG = new Int16Array(N).fill(-1);
   const orIdx = new Map(), orN = [];
   const getOr = nom => { if(!nom) return -1; let i = orIdx.get(nom); if(i === undefined){ i = orN.length; orIdx.set(nom, i); orN.push({nom, n:0}); } return i; };
@@ -769,6 +773,7 @@ function initDonnees(){
     POP[i] = r[2] + r[4] * 0.25;
     TEND[i] = r[3] + (r[3] ? 0 : r[4] * 0.0001);
     RELB[i] = bitsRel(det.l);
+    COMP[i] = /[- ]/.test(r[0]) ? 1 : 0;
     parNom.set(r[0], i);
     const prev = parCle.get(k);
     if(prev === undefined || POP[i] > POP[prev]) parCle.set(k, i);
@@ -810,7 +815,7 @@ function repDe(i, m){
   // l'orthographe la plus portée du groupe, parmi celles du mode choisi
   const g = GROUPES[GRP[i]];
   if(g.length === 1) return i;
-  for(const j of g) if(dansMode(j, m)) return j;
+  for(const j of g) if(dansMode(j, m) && !(sansComposes && COMP[j])) return j;
   return i;
 }
 
@@ -825,6 +830,7 @@ function ordre(t){
 function genreDe(i){ const g = GP[i]; return g >= 80 ? "F" : g <= 20 ? "M" : "X"; }
 function dansMode(i, m){ return m === "T" || (m === "F" ? GP[i] >= 35 : GP[i] <= 65); }
 function passeFiltres(i){
+  if(sansComposes && COMP[i]) return false;
   if(etat.orig.length && !origSet.has(ORIG[i])) return false;
   if(etat.rel){
     if(etat.rel === "N"){ if(RELB[i]) return false; }
@@ -1064,8 +1070,8 @@ function rafraichir(remonter){
   if(!$("#liste")) return;
   filtrer();
   majChips();
-  const cm = etat.mode + (fusion ? "+" : "");
-  if(!compteMode[cm]){ let c = 0; for(let i = 0; i < N; i++) if(dansMode(i, etat.mode) && (!fusion || repDe(i, etat.mode) === i)) c++; compteMode[cm] = c; }
+  const cm = etat.mode + (fusion ? "+" : "") + (sansComposes ? "s" : "");
+  if(!compteMode[cm]){ let c = 0; for(let i = 0; i < N; i++) if(dansMode(i, etat.mode) && !(sansComposes && COMP[i]) && (!fusion || repDe(i, etat.mode) === i)) c++; compteMode[cm] = c; }
   $("#hero-lbl").textContent = LIB_MODE[etat.mode];
   $("#hero-val").innerHTML = '<em>' + fmtN(compteMode[cm]) + '</em> prénoms';
   document.querySelectorAll("#seg3 button").forEach(b => b.classList.toggle("on", b.dataset.mode === etat.mode));
@@ -1336,7 +1342,8 @@ function podiumHTML(){
       '<div class="ps">' + (inf ? drapeau(inf.orig) + ' ' + esc(inf.sens && inf.sens !== "—" ? inf.sens : famille(inf.orig)) : "&nbsp;") + '</div>' +
       '<div class="socle">' + (p + 1) + '</div></div>';
   };
-  return '<div class="sect"><h2>Mon podium</h2><span class="sp"></span><span class="cnt">touche une marche pour la changer</span></div>' +
+  return '<div class="sect"><h2>Mon podium</h2><span class="sp"></span>' +
+    (podium.some(Boolean) ? '<button class="chip" data-act="pod-vider">Vider</button>' : '<span class="cnt">touche une marche pour la changer</span>') + '</div>' +
     '<div class="podium">' + marche(1) + marche(0) + marche(2) + '</div>';
 }
 function taillePodium(nom, p){
@@ -1351,7 +1358,7 @@ function choisirPodium(p){
   $("#modal").innerHTML = '<div class="mdl-bg" data-act="fermer-modal"><div class="mdl" role="dialog" aria-label="Podium">' +
     '<h3>' + MEDAILLES[p] + ' ' + (p + 1) + (p ? "e" : "re") + ' place</h3><div class="sous">Choisis parmi tes coups de cœur et tes j\'aime.</div>' +
     (cands.length > 8 ? '<input type="text" class="cherche" id="pod-q" placeholder="Chercher dans ma liste" autocomplete="off">' : "") +
-    (cands.length ? '<div class="choix defile" id="pod-l">' + cands.map(g => '<button class="opt' + (g.n === actuel ? " on" : "") + '" data-n="' + esc(g.n) + '">' +
+    (cands.length ? '<div class="choix defile" id="pod-l"><button class="opt' + (!actuel ? " on" : "") + '" data-aucun="1"><b style="color:var(--gris2);font-weight:500">○</b><span>Aucun prénom</span></button>' + cands.map(g => '<button class="opt' + (g.n === actuel ? " on" : "") + '" data-n="' + esc(g.n) + '">' +
         '<b style="color:var(' + (g.l === 2 ? "--or" : "--rose") + ');font-weight:500">' + (g.l === 2 ? "★" : "♥") + '</b><span>' + esc(g.n) + '</span>' +
         (podium.includes(g.n) && g.n !== actuel ? '<small>' + MEDAILLES[podium.indexOf(g.n)] + '</small>' : "") + '</button>').join("") + '</div>'
       : '<div class="note">Ta liste est vide : aime d\'abord quelques prénoms.</div>') +
@@ -1359,6 +1366,7 @@ function choisirPodium(p){
   '</div></div>';
   const l = $("#pod-l");
   if(l) l.addEventListener("click", e => {
+    if(e.target.closest("[data-aucun]")){ podium[p] = null; store.set("podium", podium); $("#modal").innerHTML = ""; vueFavs(); return; }
     const b = e.target.closest("[data-n]"); if(!b) return;
     const nom = b.dataset.n, ancien = podium.indexOf(nom);
     if(ancien >= 0 && ancien !== p) podium[ancien] = podium[p];   // échange de places
@@ -1437,7 +1445,7 @@ function eraDe(i){
   return _era[i] = v;
 }
 function pool(){
-  const cle = etat.mode + etat.orig.join(",") + etat.rel + etat.minPop + etat.lmin + etat.lmax + etat.avecSens + etat.style + fusion;
+  const cle = etat.mode + etat.orig.join(",") + etat.rel + etat.minPop + etat.lmin + etat.lmax + etat.avecSens + etat.style + fusion + sansComposes;
   if(_pool && _poolCle === cle) return _pool;
   const a = [];
   const seuil = etat.style === "rares" ? 30 : 150;
@@ -1458,7 +1466,7 @@ function terminaison(k, n){ return k.length > n ? k.slice(-n) : k; }
 function phonCle(k){ return k.replace(/ph/g, "f").replace(/th/g, "t").replace(/y/g, "i").replace(/k/g, "c").replace(/h/g, "").replace(/(.)\1+/g, "$1"); }
 
 function profil(){
-  const p = { poids:0, rac:new Map(), orig:new Map(), t2:new Map(), t3:new Map(), ini:new Map(), era:[], rel:new Map(), pop:new Map(), long:0, phon:new Set() };
+  const p = { poids:0, rac:new Map(), orig:new Map(), t2:new Map(), t3:new Map(), ini:new Map(), era:[], rel:new Map(), sansRel:0, pop:new Map(), long:0, phon:new Set() };
   for(const g of gouts){
     const i = parNom.get(g.n); if(i === undefined) continue;
     const w = g.l === 2 ? 2.5 : 1;
@@ -1469,6 +1477,7 @@ function profil(){
     add(p.orig, ORIG[i]);
     add(p.t2, terminaison(k, 2)); add(p.t3, terminaison(k, 3)); add(p.ini, k.charAt(0));
     for(let b = 0; b < 6; b++) if(RELB[i] & (1 << b)) add(p.rel, b);
+    if(!RELB[i]) p.sansRel += w;
     add(p.pop, Math.floor(Math.log10(POP[i] + 1)));
     const e = eraDe(i); if(e) p.era.push([e, w]);
     p.long += LONG[i] * w;
@@ -1631,24 +1640,55 @@ function empiler(){
   if(!file.length) return;
   const vis = file.slice(0, 3);
   p.innerHTML = vis.map((i, k) => carteHTML(i, k === 1 ? "dos1" : k === 2 ? "dos2" : "")).reverse().join("");
+  ajusterPile(p);
   const top = p.querySelector(".carte:not(.dos1):not(.dos2)");
   if(top) activerCarte(top);
 }
+function ajusterPile(p){
+  // la pile prend la hauteur réelle de la carte affichée : pas d'espace vide
+  p = p || $("#pile"); if(!p) return;
+  const cs = [...p.querySelectorAll(".carte")]; if(!cs.length) return;
+  cs.forEach(c => c.style.height = "auto");
+  // la carte du dessus donne la hauteur ; celles du dessous s'alignent dessus
+  const top = p.querySelector(".carte:not(.dos1):not(.dos2)") || cs[cs.length - 1];
+  if(!top.offsetHeight) return;         // vue masquée : on mesurera à l'affichage
+  const h = Math.max(240, top.offsetHeight);
+  cs.forEach(c => c.style.height = h + "px");
+  p.style.height = (h + 16) + "px";     // + le décalage des cartes du dessous
+}
+window.addEventListener("resize", () => { if(etat.vue === "dec") ajusterPile(); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if(etat.vue === "dec") ajusterPile(); });
 function activerCarte(c){
   let x0 = 0, y0 = 0, dx = 0, dy = 0, actif = false, bouge = false;
   const tO = c.querySelector(".tampon.oui"), tN = c.querySelector(".tampon.non"), tC = c.querySelector(".tampon.cdc");
+  // trois gestes seulement : gauche (non), droite (j'aime), haut (coup de cœur).
+  // Un glissé vers le bas est laissé au navigateur : il fait défiler la page.
+  let tx0 = 0, ty0 = 0, sens = null;
+  const relacher = () => { actif = false; c.classList.remove("drag"); c.style.transform = ""; tO.style.opacity = tN.style.opacity = tC.style.opacity = 0; };
+  c.addEventListener("touchstart", e => { const t = e.touches[0]; tx0 = t.clientX; ty0 = t.clientY; sens = null; }, { passive:true });
+  c.addEventListener("touchmove", e => {
+    if(sens === null){
+      const t = e.touches[0], ddx = t.clientX - tx0, ddy = t.clientY - ty0;
+      if(Math.hypot(ddx, ddy) < 3) return;
+      sens = ddy > 0 && ddy >= Math.abs(ddx) ? "page" : "carte";
+      if(sens === "page") relacher();
+    }
+    if(sens === "carte" && e.cancelable) e.preventDefault();
+  }, { passive:false });
   c.addEventListener("pointerdown", e => { actif = true; bouge = false; x0 = e.clientX; y0 = e.clientY; dx = dy = 0; c.setPointerCapture(e.pointerId); c.classList.add("drag"); });
   c.addEventListener("pointermove", e => {
-    if(!actif) return;
+    if(!actif || sens === "page") return;
     dx = e.clientX - x0; dy = e.clientY - y0;
     if(Math.hypot(dx, dy) > 6) bouge = true;
-    c.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (dx * 0.06) + "deg)";
+    const vy = dy > 0 ? dy * 0.2 : dy;    // la carte ne part pas vers le bas
+    c.style.transform = "translate(" + dx + "px," + vy + "px) rotate(" + (dx * 0.06) + "deg)";
     const haut = -dy > Math.abs(dx);
     tO.style.opacity = !haut ? Math.max(0, Math.min(1, dx / 100)) : 0;
     tN.style.opacity = !haut ? Math.max(0, Math.min(1, -dx / 100)) : 0;
     tC.style.opacity = haut ? Math.max(0, Math.min(1, -dy / 100)) : 0;
   });
   const fin = () => {
+    if(sens === "page"){ sens = null; relacher(); return; }
     if(!actif) return;
     actif = false; c.classList.remove("drag");
     if(!bouge){ c.style.transform = ""; ouvrirFiche(+c.dataset.i); return; }
@@ -1697,8 +1737,14 @@ function profilHTML(){
   const eras = p.era.length ? Math.round(p.era.reduce((a, [y, w]) => a + y * w, 0) / p.era.reduce((a, [, w]) => a + w, 0) / 10) * 10 : 0;
   const ligne = (lbl, v) => '<div class="barre-l"><span>' + lbl + '</span><div class="b"><i style="width:' + Math.round(v * 100) + '%"></i></div><span class="p">' + Math.round(v * 100) + ' %</span></div>';
   const oriNom = k => { const o = ORIGINES.find(x => x.i === k); return o ? o.nom : "—"; };
+  const trads = [...p.rel.entries()].map(([b, w]) => [TRADS[b][2] + " " + TRADS[b][1], w]);
+  if(p.sansRel) trads.push(['<span style="color:var(--gris2)">○</span> Sans tradition', p.sansRel]);
+  trads.sort((a, b) => b[1] - a[1]);
+  const sous = t => '<div class="profil-sous">' + t + '</div>';
   return '<section class="profil"><div class="sect"><h2>Ton style</h2><span class="sp"></span><span class="cnt">d\'après ' + gouts.length + ' prénoms</span></div>' +
-    '<div class="barres">' + orig.map(([k, w]) => ligne(drapeau(oriNom(k)) + " " + esc(oriNom(k)), w / tot)).join("") + '</div>' +
+    sous("Origines") + '<div class="barres">' + orig.map(([k, w]) => ligne(drapeau(oriNom(k)) + " " + esc(oriNom(k)), w / tot)).join("") + '</div>' +
+    sous("Traditions") + '<div class="barres">' + trads.slice(0, 5).map(([l, w]) => ligne(l, w / tot)).join("") + '</div>' +
+    '<div style="margin-top:8px;font-size:11.5px;color:var(--gris2)">Un prénom peut relever de plusieurs traditions : les pourcentages ne s\'additionnent pas forcément à 100.</div>' +
     '<div class="grille" style="margin-top:14px">' +
       '<div class="cel"><div class="l">Finales préférées</div><div class="v">' + fins.map(f => "-" + esc(f[0])).join(" ") + '</div></div>' +
       '<div class="cel"><div class="l">Longueur moyenne</div><div class="v">' + p.long.toFixed(1) + ' lettres</div></div>' +
@@ -2040,6 +2086,8 @@ function vuePlus(){
         [["auto","Auto"],["clair","Clair"],["sombre","Sombre"]].map(x => '<button data-v="' + x[0] + '" class="' + (theme === x[0] ? "on" : "") + '">' + x[1] + '</button>').join("") + '</div></div>' +
       '<div class="lig"><div class="l">Regrouper les orthographes<div class="d">Luna, Louna et Lùna ne font qu\'un prénom dans la liste ; les autres graphies restent visibles dans la fiche.</div></div><div class="seg" id="seg-fusion">' +
         '<button data-v="1" class="' + (fusion ? "on" : "") + '">Oui</button><button data-v="0" class="' + (!fusion ? "on" : "") + '">Non</button></div></div>' +
+      '<div class="lig"><div class="l">Masquer les prénoms composés<div class="d">Marie-Anne, Jean-Baptiste ou Louis Marie n\'apparaissent plus dans la liste. Ceux déjà dans Ma liste y restent.</div></div><div class="seg" id="seg-comp">' +
+        '<button data-v="1" class="' + (sansComposes ? "on" : "") + '">Oui</button><button data-v="0" class="' + (!sansComposes ? "on" : "") + '">Non</button></div></div>' +
     '</div></div>' +
     '<div class="bloc"><div class="bloc-h">Ma liste et Découvrir</div><div class="bloc-b">' +
       '<div class="lig"><div class="l">' + gouts.filter(g => g.l === 2).length + ' coups de cœur · ' + gouts.filter(g => g.l === 1).length + ' j\'aime<div class="d">Enregistrés sur cet appareil uniquement.</div></div><button class="btn" data-act="copier-favs">Copier</button></div>' +
@@ -2065,6 +2113,13 @@ function vuePlus(){
     file = []; _pool = null;
     rafraichir(false); vuePlus();
     toast(fusion ? "Orthographes regroupées" : "Toutes les orthographes sont listées");
+  });
+  $("#seg-comp").addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    sansComposes = b.dataset.v === "1"; store.set("sansComposes", sansComposes);
+    file = []; _pool = null;
+    rafraichir(false); vuePlus();
+    toast(sansComposes ? "Prénoms composés masqués" : "Prénoms composés affichés");
   });
   $("#nom-fam").addEventListener("change", e => {
     nomFamille = e.target.value.trim().replace(/\s+/g, " ");
@@ -2159,6 +2214,11 @@ document.addEventListener("click", e => {
     const p = $("#duo-p").value.trim(); store.set("monPrenom", p);
     $("#modal").innerHTML = "";
     partager("Nos prénoms — mode duo", (p ? p + " t'envoie" : "Voici") + " ses prénoms préférés sur Baby Name. Ouvre le lien pour voir vos matchs 💞", lienDuo(p));
+    return;
+  }
+  if(a === "pod-vider"){
+    const avant = podium.slice(); podium = [null, null, null]; store.set("podium", podium); vueFavs();
+    toast("Podium vidé", { label:"Annuler", fn(){ podium = avant; store.set("podium", podium); vueFavs(); } });
     return;
   }
   if(a === "pod-retirer"){ podium[+t.dataset.p] = null; store.set("podium", podium); $("#modal").innerHTML = ""; vueFavs(); return; }
